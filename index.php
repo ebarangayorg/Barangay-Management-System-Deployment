@@ -19,7 +19,7 @@
     <p>Gusa, Cagayan de Oro City</p>
     <div class="mt-3">
         <a href="contact.php" class="btn btn-light me-2">Contact Us</a>
-        <a href="user_login.php" class="btn btn-success">Login Now</a>
+        <a href="resident_login.php" class="btn btn-success">Login Now</a>
     </div>
 </section>
 

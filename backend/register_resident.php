@@ -1,33 +1,29 @@
 <?php
-require_once 'config.php'; // your MongoDB connection
+require_once 'config.php'; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // 1️⃣ Collect login data
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // 2️⃣ Check if email already exists in USERS
     $existingUser = $usersCollection->findOne(["email" => $email]);
     if ($existingUser) {
         die("Email already exists!");
     }
 
-    // 3️⃣ Insert into USERS collection
     $userData = [
         "email" => $email,
         "password" => $password,
         "role" => "Resident",
-        "status" => "Pending",  // requires approval
+        "status" => "Pending",  
         "date_created" => new MongoDB\BSON\UTCDateTime()
     ];
 
     $insertUser = $usersCollection->insertOne($userData);
-    $userId = $insertUser->getInsertedId(); // FK -> residents.user_id
+    $userId = $insertUser->getInsertedId(); 
 
-    // 4️⃣ Insert resident profile into RESIDENTS collection
     $residentData = [
-        "user_id" => $userId,           // link the user login
+        "user_id" => $userId,           
         "first_name" => $_POST['fname'],
         "middle_name" => $_POST['mname'],
         "last_name" => $_POST['lname'],

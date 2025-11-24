@@ -132,6 +132,15 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 .header-logos img { width:64px; height:64px; object-fit:contain; }
 
 .content { padding: 40px; width: 100%; }
+.status.active {
+    color: #0f9d33; /* green */
+    font-weight: bold;
+}
+
+.status.settled {
+    color: #e0a800; /* yellow */
+    font-weight: bold;
+}
 
 /* ---------- GRID ---------- */
 .grid {
@@ -372,6 +381,7 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 }
 
 .dropdown-btn {
+    display: flex;
     background: none;
     border: none;
     width: 100%;

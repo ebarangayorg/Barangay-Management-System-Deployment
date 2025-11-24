@@ -28,7 +28,7 @@
             <h5>Barangay Clearance</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
             <p><strong>Price: ₱50</strong></p>
-            <a href="user_login.php" class="btn btn-success">Request Now</a>
+            <a href="resident_login.php" class="btn btn-success">Request Now</a>
         </div>
 
         <!-- Card 2 -->
@@ -37,7 +37,7 @@
             <h5>Certificate of Indigency</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
             <p><strong>Price: ₱50</strong></p>
-            <a href="user_login.php" class="btn btn-success">Request Now</a>
+            <a href="resident_login.php" class="btn btn-success">Request Now</a>
         </div>
 
         <!-- Card 3 -->
@@ -46,7 +46,7 @@
             <h5>Certificate of Residency</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
             <p><strong>Price: ₱50</strong></p>
-            <a href="user_login.php" class="btn btn-success">Request Now</a>
+            <a href="resident_login.php" class="btn btn-success">Request Now</a>
         </div>
 
         <!-- Card 4 -->
@@ -55,7 +55,7 @@
             <h5>Barangay Business Clearance</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
             <p><strong>Price: ₱50</strong></p>
-            <a href="user_login.php" class="btn btn-success">Request Now</a>
+            <a href="resident_login.php" class="btn btn-success">Request Now</a>
         </div>
     </div>
 

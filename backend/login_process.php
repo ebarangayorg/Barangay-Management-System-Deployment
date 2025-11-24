@@ -3,15 +3,12 @@ session_start();
 require_once 'config.php'; 
 
 
-// Retrieve and sanitize form data
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 
-// If a role is posted (admin form), it will be used. Absence => resident form.
 $postedRole = trim($_POST['role'] ?? '');
 $isResidentForm = $postedRole === '';
 
-// Basic validation
 if (empty($email) || empty($password)) {
     echo "<script>alert('Email and password are required'); window.history.back();</script>";
     exit();
@@ -22,7 +19,6 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit();
 }
 
-// Find the user by email
 $user = $usersCollection->findOne(['email' => $email]);
 
 if (!$user) {
@@ -30,7 +26,6 @@ if (!$user) {
     exit();
 }
 
-// Prepare stored password
 $stored = isset($user['password']) ? (string)$user['password'] : '';
 
 if ($stored === '') {
@@ -38,13 +33,11 @@ if ($stored === '') {
     exit();
 }
 
-// Verify password
 if (!password_verify($password, $stored)) {
     echo "<script>alert('Incorrect password'); window.history.back();</script>";
     exit();
 }
 
-// Check role
 $userRole = isset($user['role']) ? $user['role'] : 'Resident';
 
 if ($isResidentForm) {
@@ -60,7 +53,6 @@ if ($isResidentForm) {
     }
 }
 
-// Successful login: regenerate session id and set session
 session_regenerate_id(true);
 $_SESSION['email'] = $user['email'];
 $_SESSION['role'] = $userRole;
@@ -70,7 +62,6 @@ if ($userRole === 'Resident' && $user['status'] === 'Pending') {
     exit();
 }
 
-// Redirect based on role
 if ($userRole === 'Barangay Staff') {
     header("Location: ../pages/admin/admin_dashboard.php");
 } else {
@@ -78,5 +69,5 @@ if ($userRole === 'Barangay Staff') {
 }
 exit();
 
-// ...existing code...
+
 ?>

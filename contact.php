@@ -47,7 +47,7 @@
             <textarea name="message" rows="6" placeholder="Type your complaint or concern here..." required></textarea>
         </div>
 
-        <p class="note">Please be informed that your information will be checked and handle carefully. We will notify you via email regarding your concerns and complains</p>
+        <p class="note">Please be informed that your information will be checked and handle carefully. We may notify you via email regarding your concerns and complains</p>
 
         <button type="submit">SEND MESSAGE</button>
         </form>

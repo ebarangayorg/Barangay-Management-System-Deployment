@@ -1,3 +1,5 @@
+<?php require_once '../../backend/auth_resident.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

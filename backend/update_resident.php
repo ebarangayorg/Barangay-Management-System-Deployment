@@ -5,16 +5,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $residentId = new MongoDB\BSON\ObjectId($_POST["user_id"]);
 
-    // Load the current resident record
     $resident = $residentsCollection->findOne(["_id" => $residentId]);
 
     if (!$resident) {
         die("Resident not found!");
     }
 
-    $userId = $resident->user_id; // Get linked user document
+    $userId = $resident->user_id; 
 
-    // Update RESIDENT record
     $residentsCollection->updateOne(
         ["_id" => $residentId],
         ['$set' => [
@@ -40,7 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ]]
     );
 
-    // Update USER status
     $usersCollection->updateOne(
         ["_id" => $userId],
         ['$set' => [

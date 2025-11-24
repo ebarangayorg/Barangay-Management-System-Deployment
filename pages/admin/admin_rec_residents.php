@@ -60,11 +60,12 @@
 
     <div class="content">
         <div class="search-box">
-            <input type="text" placeholder="Search for Document Type...">
-            <button><i class="bi bi-search"></i></button>
+            <input type="text" id="search-input" placeholder="Search for Resident Name...">
+            <button id="search-btn"><i class="bi bi-search"></i></button>
         </div>
 
-        <table>
+
+        <table id="residentTable">
             <tr>
                 <th>Resident Name</th>
                 <th>Age</th>
@@ -90,7 +91,7 @@
                 <tr
                     data-id="<?= $r->_id ?>"
                     data-fname="<?= $r->first_name ?>"
-                    data-mname="<?= $r->middle_name ?>"
+                    data-mname="<?= $r->middle_name ?? '' ?>"
                     data-lname="<?= $r->last_name ?>"
                     data-sname="<?= $r->suffix ?>"
                     data-gender="<?= $r->gender ?>"
@@ -383,6 +384,31 @@ document.querySelectorAll(".delete-btn").forEach(btn => {
         new bootstrap.Modal(document.getElementById("deleteModal")).show();
     });
 });
+
+document.getElementById("search-input").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#residentTable tbody tr");
+
+    rows.forEach(row => {
+        let fullName = (
+            row.dataset.fname + " " +
+            row.dataset.mname + " " +
+            row.dataset.lname + " " +
+            row.dataset.sname
+        ).toLowerCase();
+
+        if (fullName.includes(value)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+});
+
+document.getElementById("search-btn").addEventListener("click", () => {
+    document.getElementById("search-input").dispatchEvent(new Event("keyup"));
+});
+
 </script>
 
 </body>
