@@ -68,7 +68,7 @@
         </div>
 
         <!-- Buttons: Add New + Archive -->
-        <div class="mt-2 mt-md-0">
+        <div class="add-archive-buttons">
             <button class="btn btn-primary me-2"><i class="bi bi-plus-circle"></i> Add New</button>
             <button class="btn btn-secondary"><i class="bi bi-archive"></i> Archive</button>
         </div>

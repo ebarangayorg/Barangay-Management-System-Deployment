@@ -11,7 +11,7 @@ try {
     $officialsCollection = $database->officials;
     $contactsCollection = $database->contacts;
     $incidentsCollection = $database->incidents;
-
+    $announcementCollection = $database->announcements;
 } catch (Exception $e) {
     die("Error connecting to MongoDB: " . $e->getMessage());
 }

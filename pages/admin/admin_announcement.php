@@ -1,20 +1,19 @@
-<?php require_once '../../backend/auth_admin.php'; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BMS - Admin Announcement</title>
-    <link rel="icon" type="image/png" href="../../assets/img/BMS.png">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BMS - Admin Announcement</title>
+<link rel="icon" type="image/png" href="../../assets/img/BMS.png">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../css/dashboard.css" />
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="../../css/dashboard.css?v=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
-<body>
 
+<body>
 <div class="sidebar">
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
@@ -32,27 +31,25 @@
         <a href="admin_issuance.php"><i class="bi bi-bookmark"></i> Issuance</a>
 
         <div class="dropdown-container">
-          <button class="dropdown-btn">
-              <i class="bi bi-file-earmark-text"></i> Records
-              <i class="bi bi-caret-down-fill dropdown-arrow"></i>
-          </button>
-          <div class="dropdown-content">
-              <a href="admin_rec_residents.php">Residents</a>
-              <a href="admin_rec_complaints.php">Complaints</a>
-              <a href="admin_rec_blotter.php">Blotter</a>
-          </div>
-      </div>
+            <button class="dropdown-btn">
+                <i class="bi bi-file-earmark-text"></i> Records
+                <i class="bi bi-caret-down-fill dropdown-arrow"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="admin_rec_residents.php">Residents</a>
+                <a href="admin_rec_complaints.php">Complaints</a>
+                <a href="admin_rec_blotter.php">Blotter</a>
+            </div>
+        </div>
 
         <a href="../../backend/logout.php"><i class="bi bi-box-arrow-left"></i> Logout</a>
     </div>
 </div>
 
 <div style="width:100%">
-
     <div class="header">
         <div class="hamburger" onclick="toggleSidebar()">☰</div>
         <h1 class="header-title"><span class="green">ANNOUNCEMENT</span></h1>
-
         <div class="header-logos">
             <img src="../../assets/img/barangaygusalogo.png">
             <img src="../../assets/img/cdologo.png">
@@ -61,75 +58,273 @@
 
     <div class="content">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-
-        <!-- Search Bar -->
-        <div class="search-box">
-            <input type="text" placeholder="Search for Document Type..." class="form-control">
-            <button><i class="bi bi-search"></i></button>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for Title" class="form-control">
+                <button><i class="bi bi-search"></i></button>
+            </div>
+            <div class="mt-2 mt-md-0">
+                <!-- Add New Announcement -->
+                <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="bi bi-plus-circle"></i> Add New
+                </button>
+                <a href="admin_announcement_archive.php" class="btn btn-secondary">
+                    <i class="bi bi-archive"></i> Archive
+                </a>
+            </div>
         </div>
 
-        <!-- Buttons: Add New + Archive -->
-        <div class="mt-2 mt-md-0">
-            <button class="btn btn-primary me-2"><i class="bi bi-plus-circle"></i> Add New</button>
-            <button class="btn btn-secondary"><i class="bi bi-archive"></i> Archive</button>
-        </div>
-
-    <table>
-        <tr>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Details</th>
-            <th>Request Date</th>
-            <th>Action</th>
-        </tr>
-
-        <tr>
-            <td><img src="../../assets/img/announcement1.png" style="width: 300px; height: auto;"></td>
-            <td>National Heroes Day</td>
-            <td>National Heroes Day is a public holiday in the Philippines celebrated on the last Monday of August to honor the country's heroes.</td>
-            <td>08/02/2025</td>
-            <td>
-                <button class="btn btn-sm btn-primary me-1"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-            </td>
-        </tr>
-
-        <tr>
-            <td><img src="../../assets/img/announcement2.png" style="width: 300px; height: auto;" /></td>
-            <td>Higalaay Festival 2025</td>
-            <td>The 2025 Higalaay Festival in Cagayan de Oro City ran throughout August with the theme "CDO@75: Proud of our Roots. Bold in our Dreams". </td>
-            <td>08/03/2025</td>
-            <td>
-                <button class="btn btn-sm btn-primary me-1"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-            </td>
-        </tr>
-
-        <tr>
-            <td><img src="../../assets/img/announcement3.png" style="width: 300px; height: auto;" /></td>
-            <td>Pamaskong Handog</td>
-            <td>The City Government of Muntinlupa kicked off the distribution of its Pamaskong Handog, marking the third consecutive year of the city’s Christmas program that brings joy and assistance to Muntinlupeño families during the holiday season.</td>
-            <td>08/04/2025</td>
-            <td>
-                <button class="btn btn-sm btn-primary me-1"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-            </td>
-        </tr>
-    </table>
+        <!-- Announcement Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 320px;">Image</th>
+                    <th>Title</th>
+                    <th>Details</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th style="width: 150px;">Action</th>
+                </tr>
+            </thead>
+            <tbody id="announcementTable"></tbody>
+        </table>
     </div>
-
 </div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Add New Announcement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+        <form action="../../backend/announcement_add.php" method="POST" enctype="multipart/form-data">
+            <!-- Photo -->
+            <div class="mb-3">
+                <label class="fw-bold">Photo</label>
+                <input type="file" name="photo" id="add-photo" class="form-control" accept="image/*">
+            </div>
+            <div class="mb-3 preview-wrapper">
+                <img id="add-preview" class="preview-img" src="" style="display:none; max-width: 300px;">
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label>Title</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Details</label>
+                <textarea name="details" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Date</label>
+                    <input type="date" id="add-date" name="date" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Time</label>
+                    <input type="time" id="add-time" name="time" class="form-control" style="width: 100%;" required>
+                </div>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Post</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Announcement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+        <form action="../../backend/announcement_update.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="edit-id" name="id">
+
+            <!-- Photo -->
+            <div class="mb-3">
+                <label class="fw-bold">Photo</label>
+                <input type="file" name="photo" id="edit-photo" class="form-control" accept="image/*">
+            </div>
+            <div class="mb-3 preview-wrapper">
+                <img id="edit-preview" class="preview-img" src="" style="display:none; max-width: 300px;">
+            </div>
+            <hr>
+
+            <div class="mb-3">
+                <label>Title</label>
+                <input type="text" id="edit-title" name="title" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Details</label>
+                <textarea id="edit-details" name="details" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Date</label>
+                    <input type="date" id="edit-date" name="date" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Time</label>
+                    <input type="time" id="edit-time" name="time" class="form-control" style="width: 100%;" required>
+                </div>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+
+<!--- Archive Modal !--->
+<div class="modal fade" id="archiveModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+        <h4>Archive Announcement</h4>
+        <p>Are you sure you want to archive this announcement?</p>
+
+        <form action="../../backend/announcement_update.php" method="POST">
+            <input type="hidden" name="id" id="a_id">
+            <input type="hidden" name="status" value="archived">
+            <button class="btn btn-warning" type="submit">Archive</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </form>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
-document.querySelectorAll('.dropdown-btn').forEach(btn => {
-    btn.addEventListener('click', function () {
-        this.parentElement.classList.toggle('active');
+
+// ======================= GLOBAL FUNCTIONS =======================
+
+// Archive Modal
+function openArchiveModal(id) {
+    document.getElementById('a_id').value = id.$oid ?? id;
+    new bootstrap.Modal(document.getElementById('archiveModal')).show();
+}
+
+// Edit Modal population
+function openEditModal(button) {
+    document.getElementById('edit-id').value = button.dataset.id;
+    document.getElementById('edit-title').value = button.dataset.title;
+    document.getElementById('edit-details').value = button.dataset.details;
+    document.getElementById('edit-date').value = button.dataset.date;
+    document.getElementById('edit-time').value = button.dataset.time;
+
+    const editPreview = document.getElementById('edit-preview');
+    if(button.dataset.image){
+        editPreview.src = `../../uploads/announcements/${button.dataset.image}`;
+        editPreview.style.display = "block";
+    } else {
+        editPreview.style.display = "none";
+    }
+}
+
+// Add Modal Image Preview
+document.getElementById("add-photo").addEventListener("change", function(event){
+    const file = event.target.files[0];
+    const preview = document.getElementById("add-preview");
+    if(file){
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+    } else {
+        preview.style.display = "none";
+    }
+});
+
+// Edit Modal Image Preview
+document.getElementById("edit-photo").addEventListener("change", function(event){
+    const file = event.target.files[0];
+    const preview = document.getElementById("edit-preview");
+    if(file){
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+    }
+});
+
+// ======================= LOAD ANNOUNCEMENTS =======================
+fetch("../../backend/announcement_get.php")
+.then(res => res.json())
+.then(data => {
+    let table = "";
+    data.forEach(item => {
+        table += `
+        <tr>
+            <td><img src="../../uploads/announcements/${item.image}" style="width:300px;height:auto;"></td>
+            <td>${item.title}</td>
+            <td>${item.details}</td>
+            <td>${item.date}</td>
+            <td>${item.time}</td>
+            <td>
+                <button class="btn btn-primary btn-sm me-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                    data-id="${item._id}"
+                    data-title="${item.title.replace(/"/g,'&quot;')}"
+                    data-details="${item.details.replace(/"/g,'&quot;')}"
+                    data-date="${item.date}"
+                    data-time="${item.time}"
+                    data-image="${item.image}">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+
+                <button class="btn btn-warning btn-sm me-1"
+                    onclick='openArchiveModal("${item._id}")'>
+                    <i class="bi bi-archive"></i>
+                </button>
+
+                <a href="../../backend/announcement_delete.php?id=${item._id}" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </td>
+        </tr>`;
+    });
+    document.getElementById("announcementTable").innerHTML = table;
+
+    // Attach Edit modal population dynamically
+    document.querySelectorAll('button[data-bs-target="#editModal"]').forEach(btn => {
+        btn.addEventListener('click', function(){
+            openEditModal(this);
+        });
+    });
+
+    // Disable typing for date/time inputs
+    ['add-date','add-time','edit-date','edit-time'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('keydown', e => e.preventDefault());
+    });
+
+    // Dropdown toggle logic
+    document.querySelectorAll('.dropdown-container').forEach(container => {
+        if(container.querySelector('.dropdown-content a.active')){
+            container.classList.add('active');
+        }
+    });
+
+    document.querySelectorAll('.dropdown-btn').forEach(btn => {
+        btn.addEventListener('click', function(){
+            this.parentElement.classList.toggle('active');
+        });
     });
 });
 </script>
-
 </body>
 </html>

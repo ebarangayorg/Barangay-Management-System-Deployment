@@ -92,7 +92,7 @@ $incidents = $incidentsCollection->find($filter);
 
 
 
-            <div class="mt-2 mt-md-0">
+            <div class="add-archive-buttons">
                 <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="bi bi-plus-circle"></i> Add New
                 </button>

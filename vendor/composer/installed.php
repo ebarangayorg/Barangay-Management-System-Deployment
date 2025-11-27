@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '7558d5b4b951730452ce9f51745631604a4fe3d9',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '7558d5b4b951730452ce9f51745631604a4fe3d9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -26,9 +26,9 @@
             ),
         ),
         'mongodb/mongodb' => array(
-            'pretty_version' => '2.1.1',
-            'version' => '2.1.1.0',
-            'reference' => 'f399d24905dd42f97dfe0af9706129743ef247ac',
+            'pretty_version' => '2.1.2',
+            'version' => '2.1.2.0',
+            'reference' => '0a2472ba9cbb932f7e43a8770aedb2fc30612a67',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mongodb/mongodb',
             'aliases' => array(),
