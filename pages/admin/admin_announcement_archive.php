@@ -1,6 +1,5 @@
 <?php require_once '../../backend/auth_admin.php'; ?>
-<?php
-require_once "../../backend/config.php";
+<?php require_once "../../backend/config.php";
 
 $searchQuery = $_GET["search"] ?? "";
 
