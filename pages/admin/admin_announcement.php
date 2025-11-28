@@ -217,22 +217,6 @@
     </div>
   </div>
 </div>
-<?php
-require_once '../../backend/auth_admin.php';
-require_once '../../backend/db_connection.php'; // Make sure this connects to your DB
-
-// Get total population (number of residents)
-$population_query = "SELECT COUNT(*) as total_population FROM residents";
-$population_result = $conn->query($population_query);
-$population_data = $population_result->fetch_assoc();
-$total_population = $population_data['total_population'];
-
-// Get total households (distinct households)
-$household_query = "SELECT COUNT(DISTINCT household_id) as total_households FROM residents";
-$household_result = $conn->query($household_query);
-$household_data = $household_result->fetch_assoc();
-$total_households = $household_data['total_households'];
-?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
