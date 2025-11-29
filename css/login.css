@@ -111,3 +111,55 @@ label {
 .right a:hover {
   text-decoration: underline;
 }
+
+/* MOBILE RESPONSIVE LAYOUT */
+@media (max-width: 768px) {
+  body {
+    background: linear-gradient(135deg, #0c8c3a, #1a632c);
+  }
+  .login-container {
+    background: none; 
+    flex-direction: column;   
+    height: auto;             
+    padding: 20px;
+    align-items: center;      
+    justify-content: center; 
+  }
+
+  .left, .right {
+    flex: none;
+    width: 100%;
+    max-width: 400px;        
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .left {
+    background: none;         
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .left img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .right {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .right form {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .alt-login {
+    float: none;
+    display: inline-block;
+    margin-top: 10px;
+  }
+}

@@ -23,7 +23,7 @@ $incidentsCollection->updateOne(
 );
 
 if (isset($_POST["status"]) && $_POST["status"] === "archived") {
-    header("Location: ../pages/admin/admin_rec_blotter.php");
+    header("Location: ../pages/admin/admin_rec_blotter_archive.php");
     exit;
 }
 

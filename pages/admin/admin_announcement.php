@@ -19,8 +19,8 @@
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
         <div>
-            <h3>Lorebina C. Carrasco II</h3>
-            <small>carrasco.lorebina85@gmail.com</small>
+            <h3>Anonymous 1</h3>
+            <small>admin@email.com</small>
             <div class="dept">IT Department</div>
         </div>
     </div>
@@ -143,6 +143,26 @@
 </div>
 </div>
 
+<!-- View Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content p-3">
+        <h4>Announcement Details</h4>
+        <p><b>Title:</b> <span id="v_title"></span></p>
+        <p><b>Details:</b> <span id="v_details"></span></p>
+        <p><b>Location:</b> <span id="v_location"></span></p>
+        <p><b>Date:</b> <span id="v_date"></span></p>
+        <p></p><b>Time:</b> <span id="v_time"></span></p>
+        <p>
+            <b>Image:</b> 
+            <br>
+            <img id="v_image" src="" style="width:100%;height:auto;border-radius:5px;">
+        </p>
+        <button class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -229,13 +249,16 @@ function truncateText(text, maxLength = 50) {
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 }
 
-// Archive Modal
-function openArchiveModal(id) {
-    document.getElementById('a_id').value = id.$oid ?? id;
-    new bootstrap.Modal(document.getElementById('archiveModal')).show();
+function openViewModal(data) {
+    document.getElementById('v_title').textContent = data.title;
+    document.getElementById('v_details').textContent = data.details;
+    document.getElementById('v_location').textContent = data.location;
+    document.getElementById('v_date').textContent = data.date;
+    document.getElementById('v_time').textContent = data.time;
+    document.getElementById('v_image').src = data.image ? `../../uploads/announcements/${data.image}` : '';
+    new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 
-// Edit Modal population
 function openEditModal(button) {
     document.getElementById('edit-id').value = button.dataset.id;
     document.getElementById('edit-title').value = button.dataset.title;
@@ -252,6 +275,11 @@ function openEditModal(button) {
     } else {
         editPreview.style.display = "none";
     }
+}
+
+function openArchiveModal(id) {
+    document.getElementById('a_id').value = id.$oid ?? id;
+    new bootstrap.Modal(document.getElementById('archiveModal')).show();
 }
 
 // Add Modal Image Preview
@@ -284,13 +312,18 @@ fetch("../../backend/announcement_get.php")
     data.forEach(item => {
         table += `
         <tr>
-            <td><img src="../../uploads/announcements/${item.image}" style="width:300px;height:auto;"></td>
+            <td><img src="../../uploads/announcements/${item.image}"style="width:300px;height:120px;object-fit:cover;border-radius:5px"></td>
             <td>${item.title}</td>
             <td>${truncateText(item.details, 25)}</td>
             <td>${item.location}</td>
             <td>${item.date}</td>
             <td>${item.time}</td>
             <td>
+                <button class="btn btn-info btn-sm text-white"
+                    onclick='openViewModal(${JSON.stringify(item)})'>
+                    <i class="bi bi-eye"></i>
+                </button>
+
                 <button class="btn btn-primary btn-sm me-1"
                     data-bs-toggle="modal"
                     data-bs-target="#editModal"
@@ -308,10 +341,6 @@ fetch("../../backend/announcement_get.php")
                     onclick='openArchiveModal("${item._id}")'>
                     <i class="bi bi-archive"></i>
                 </button>
-
-                <a href="../../backend/announcement_delete.php?id=${item._id}" class="btn btn-danger btn-sm">
-                    <i class="bi bi-trash"></i>
-                </a>
             </td>
         </tr>`;
     });

@@ -72,74 +72,88 @@ body {
     border-radius: 10px;
 }
 
-/* Banner / Header */
-/* Ensure header-banner has relative positioning */
 .header-banner {
-    position: relative; 
-    padding: 90px 20px; 
-    background: rgba(0, 100, 0, 0.85) url("../assets/img/barangay-gusa.jpg") center/cover no-repeat;
+    padding: 90px 20px;
+    background: rgba(0, 100, 0, 0.85) url("../assets/img/barangay-gusa.jpg")
+        center/cover no-repeat;
     color: white;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 20px;
 }
 
-/* LEFT LOGO */
-.header-banner::before {
-    content: "";
-    position: absolute;
-    top: 60px;          
-    left: 110px;        
+.header-banner img {
     width: 100px;
     height: 100px;
-    background-image: url("../assets/img/cdologo.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 10;        
+    object-fit: contain;
 }
 
-/* RIGHT LOGO */
-.header-banner::after {
-    content: "";
-    position: absolute;
-    top: 55px;          
-    right: 110px;        
-    width: 100px;
-    height: 100px;
-    background-image: url("../assets/img/barangaygusalogo.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 10;
-}
+.header-banner .right-logo{ position: relative; right: 50px;}
+.header-banner .left-logo{ position: relative; left: 50px;}
 
+.header-text {
+    display: flex; 
+    align-items: center; 
+    gap: 20px;
+}
 
 .header-banner h1 {
-    color: white; 
-    margin: 0; 
+    margin: 0;
     font-weight: bold;
 }
 
 .header-banner h3 {
-    color: #66B761; 
-    font-weight: bold; 
-    margin: 0; 
+    color: #66B761;
+    font-weight: bold;
+    margin: 0;
     font-size: 40px;
 }
 
-.header-banner p {
-    margin: 10px 0 0;
-    font-size: 14px;
-}
-
+/* Mobile View */
 @media (max-width: 768px) {
     .header-banner {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .header-banner img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .header-banner .right-logo{ position: relative; right: 20px;}
+    .header-banner .left-logo{ position: relative; left: 20px;}
+
+    .header-text {
+        text-align: center !important;
         flex-direction: column;
-        justify-content: center;
+        gap: 5px;
+    }   
+
+    .header-banner h1 {
+        font-size: 26px;
+        white-space: nowrap;
+    }
+
+    .header-banner h3 {
+        font-size: 20px;
+    }
+
+}
+
+@media (max-width: 991px) {
+    .navbar-brand {
+        right: 0 !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+        display: block;
+        width: 100%;
     }
 }
+
+
 
 /* Registration Form */
 .registration-form {

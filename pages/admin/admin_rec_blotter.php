@@ -38,8 +38,8 @@ $incidents = $incidentsCollection->find($filter);
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
         <div>
-            <h3>Lorebina C. Carrasco II</h3>
-            <small>carrasco.lorebina85@gmail.com</small>
+            <h3>Anonymous 1</h3>
+            <small>admin@email.com</small>
             <div class="dept">IT Department</div>
         </div>
     </div>
@@ -89,8 +89,6 @@ $incidents = $incidentsCollection->find($filter);
                     value="<?= htmlspecialchars($searchQuery) ?>">
                 <button class="search-btn"><i class="bi bi-search"></i></button>
             </form>
-
-
 
             <div class="add-archive-buttons">
                 <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal">

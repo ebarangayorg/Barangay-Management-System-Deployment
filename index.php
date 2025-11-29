@@ -1,7 +1,6 @@
 <?php
-require_once "backend/config.php"; // adjust path if needed
+require_once "backend/config.php"; 
 
-// Fetch active announcements
 $announcementFilter = ['status' => 'active'];
 $announcements = $announcementCollection->find(
     ['status' => 'active'],
@@ -16,7 +15,7 @@ $announcements = $announcementCollection->find(
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>BMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -53,21 +52,21 @@ $announcements = $announcementCollection->find(
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card card-custom p-4">
-                    <img src="assets/img/home1.png" class="mx-auto mb-3" width="50" />
+                    <img src="assets/img/officials.png" class="mx-auto mb-3" width="150" />
                     <h5>Barangay Officials</h5>
                     <a href="officials.php" class="btn btn-success mt-3">Learn More</a>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card card-custom p-4">
-                    <img src="assets/img/home2.png" class="mx-auto mb-3" width="50" />
+                    <img src="assets/img/announcements.png" class="mx-auto mb-3" width="150" />
                     <h5>Announcements</h5>
                     <a href="announcement.php" class="btn btn-success mt-3">Learn More</a>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card card-custom p-4">
-                    <img src="assets/img/home3.png" class="mx-auto mb-3" width="50" />
+                    <img src="assets/img/issuance.png" class="mx-auto mb-3" width="150" />
                     <h5>Issuance</h5>
                     <a href="issuance.php" class="btn btn-success mt-3">Learn More</a>
                 </div>

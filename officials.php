@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>BMS - Officials</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="assets/img/BMS.png">
@@ -12,11 +12,13 @@
 
 <?php include 'includes/nav.php'; ?>
 
-<section class="header-banner" style="display: flex; align-items: center; justify-content: center;">
-    <div class="overlay" style="display: flex; align-items: center; gap: 20px;">
+<section class="header-banner">
+    <img src="assets/img/cdologo.png" class="left-logo" alt="left logo">
+    <div class="header-text">
         <h1>Barangay</h1> 
         <h3>Officials</h3>
     </div>
+    <img src="assets/img/barangaygusalogo.png" class="right-logo" alt="right logo">
 </section>
 
 <section class="py-5 bg-light">
@@ -49,7 +51,7 @@ fetch('backend/officials_get.php')
                 <img src="assets/officials/${official.image}" style="width:100%; height:auto; border-radius:5px;">
                 <div>
                     <h6 class="mt-2 fw-bold">${official.name}</h6>
-                    <p class="mt-2" style="font-size:1px">${official.position}</p>
+                    <p class="mt-2">${official.position}</p>
                 </div>
             </div>
         </div>

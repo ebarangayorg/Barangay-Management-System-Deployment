@@ -3,14 +3,26 @@ require_once "backend/config.php"; // adjust path if needed
 
 // Fetch active announcements
 $announcementFilter = ['status' => 'active'];
-$announcements = $announcementCollection->find($announcementFilter);
+// Fetch active announcements sorted by newest date & time
+$announcementFilter = ['status' => 'active'];
+
+$announcements = $announcementCollection->find(
+    $announcementFilter,
+    [
+        'sort' => [
+            'date' => -1,
+            'time' => -1
+        ]
+    ]
+);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>BMS - Announcements</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -21,11 +33,13 @@ $announcements = $announcementCollection->find($announcementFilter);
 
 <?php include 'includes/nav.php'; ?>
 
-<section class="header-banner" style="display: flex; align-items: center; justify-content: center;">
-    <div class="overlay" style="display: flex; align-items: center; gap: 20px;">
+<section class="header-banner">
+    <img src="assets/img/cdologo.png" class="left-logo" alt="left logo">
+    <div class="header-text">
         <h1>Barangay</h1> 
         <h3>Announcements</h3>
     </div>
+    <img src="assets/img/barangaygusalogo.png" class="right-logo" alt="right logo">
 </section>
 
 <section class="py-5 bg-light">

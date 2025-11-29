@@ -34,15 +34,26 @@ $announcements = $announcementCollection->find($filter);
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
         <div>
-            <h3>Lorebina C. Carrasco II</h3>
-            <small>carrasco.lorebina85@gmail.com</small>
+            <h3>Anonymous 1</h3>
+            <small>admin@email.com</small>
             <div class="dept">IT Department</div>
         </div>
     </div>
 
     <div class="sidebar-menu">
-        <a href="admin_dashboard.php"><i class="bi bi-house-door"></i> Dashboard</a>
-        <a href="admin_announcement.php"><i class="bi bi-arrow-left"></i> Back</a>
+        <div class="dropdown-container">
+            <button class="dropdown-btn">
+                <i class="bi bi-file-earmark-text"></i> Archives
+                <i class="bi bi-caret-down-fill dropdown-arrow"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="admin_announcement_archive.php" class="active"><i class="bi bi-megaphone"></i> Announcement</a>
+                <a href="admin_officials_archive.php"><i class="bi bi-people"></i> Officials</a>
+                <a href="admin_rec_complaints_archive.php"><i class="bi bi-file-earmark-text"></i> Complaints</a>
+                <a href="admin_rec_blotter_archive.php"><i class="bi bi-file-earmark-text"></i> Blotter</a>
+            </div>
+            <a href="admin_announcement.php"><i class="bi bi-arrow-left"></i> Back</a>
+        </div>
     </div>
 </div>
 
@@ -52,14 +63,13 @@ $announcements = $announcementCollection->find($filter);
     </div>
 
     <div class="content">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        
             <form method="GET" class="search-box d-flex">
                 <input type="text" name="search" class="form-control"
                        placeholder="Search by Title or Details..."
                        value="<?= htmlspecialchars($searchQuery) ?>">
                 <button class="search-btn"><i class="bi bi-search"></i></button>
             </form>
-        </div>
 
         <table class="table table-striped">
             <thead>
@@ -78,11 +88,11 @@ $announcements = $announcementCollection->find($filter);
                 <tr>
                     <td>
                         <?php if (!empty($item->image)): ?>
-                            <img src="../../uploads/announcements/<?= $item->image ?>" style="width:150px;height:auto;">
+                            <img src="../../uploads/announcements/<?= $item->image ?>" style="width:150px;height:auto;border-radius:5px;">
                         <?php endif; ?>
                     </td>
                     <td><?= $item->title ?></td>
-                    <td><?= $item->details ?></td>
+                    <td><?= strlen($item->details) > 25 ? substr($item->details, 0, 25) . '...' : $item->details ?></td>
                     <td><?= $item->location ?? '-' ?></td>
                     <td><?= $item->date ?></td>
                     <td><?= $item->time ?></td>
@@ -124,7 +134,7 @@ $announcements = $announcementCollection->find($filter);
         <p></p><b>Time:</b> <span id="v_time"></span></p>
         <p>
             <b>Image:</b> 
-            <img id="v_image" src="" style="max-width:100%;height:auto;">
+            <img id="v_image" src="" style="width:100%;height:auto;border-radius:5px;">
         </p>
         <button class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button>
     </div>
@@ -166,6 +176,22 @@ $announcements = $announcementCollection->find($filter);
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+}
+
+document.querySelectorAll('.dropdown-container').forEach(container => {
+    if (container.querySelector('.dropdown-content a.active')) {
+        container.classList.add('active');
+    }
+});
+
+document.querySelectorAll('.dropdown-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        this.parentElement.classList.toggle('active');
+    });
+});
+
 function openViewModal(data) {
     document.getElementById('v_title').textContent = data.title;
     document.getElementById('v_details').textContent = data.details;
@@ -185,6 +211,7 @@ function openDeleteModal(id) {
     document.getElementById('d_id').value = id.$oid ?? id;
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
+
 </script>
 
 </body>

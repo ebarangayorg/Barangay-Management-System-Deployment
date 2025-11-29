@@ -18,8 +18,8 @@
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
         <div>
-            <h3>Lorebina C. Carrasco II</h3>
-            <small>carrasco.lorebina85@gmail.com</small>
+            <h3>Anonymous 1</h3>
+            <small>admin@email.com</small>
             <div class="dept">IT Department</div>
         </div>
     </div>
@@ -170,7 +170,7 @@
         <p><b>Name:</b> <span id="v_name"></span></p>
         <p><b>Position:</b> <span id="v_position"></span></p>
         <p><b>Image:</b> <br>
-            <img id="v_image" src="" style="max-width:100%;height:auto;">
+            <img id="v_image" src="" style="width:100%;height:auto;">
         </p>
         <button class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button>
     </div>
@@ -198,10 +198,17 @@
 function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
+document.querySelectorAll('.dropdown-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        this.parentElement.classList.toggle('active');
+    });
+});
 
-function openArchiveModal(id) {
-    document.getElementById('o_id').value = id.$oid ?? id;
-    new bootstrap.Modal(document.getElementById('archiveModal')).show();
+function openViewModal(data) {
+    document.getElementById('v_name').textContent = data.name;
+    document.getElementById('v_position').textContent = data.position;
+    document.getElementById('v_image').src = data.image ? `../../assets/officials/${data.image}` : '';
+    new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 
 function openEditModal(button) {
@@ -218,11 +225,9 @@ function openEditModal(button) {
     }
 }
 
-function openViewModal(data) {
-    document.getElementById('v_name').textContent = data.name;
-    document.getElementById('v_position').textContent = data.position;
-    document.getElementById('v_image').src = data.image ? `../../assets/officials/${data.image}` : '';
-    new bootstrap.Modal(document.getElementById('viewModal')).show();
+function openArchiveModal(id) {
+    document.getElementById('o_id').value = id.$oid ?? id;
+    new bootstrap.Modal(document.getElementById('archiveModal')).show();
 }
 
 document.getElementById("add-photo").addEventListener("change", function(event){
@@ -261,10 +266,15 @@ function renderTable(data) {
     data.forEach(item => {
         table += `
         <tr>
-            <td><img src="../../assets/officials/${item.image}" style="width:120px;height:auto;border-radius:5px;"></td>
+            <td><img src="../../assets/officials/${item.image}" style="width:300px;height:200px;object-fit:cover;border-radius:5px;"></td>
             <td>${item.name}</td>
             <td>${item.position}</td>
             <td>
+                <button class="btn btn-info btn-sm text-white"
+                    onclick='openViewModal(${JSON.stringify(item)})'>
+                    <i class="bi bi-eye"></i>
+                </button>
+
                 <button class="btn btn-primary btn-sm me-1"
                     data-bs-toggle="modal"
                     data-bs-target="#editModal"
@@ -273,11 +283,6 @@ function renderTable(data) {
                     data-position="${item.position.replace(/"/g,'&quot;')}"
                     data-image="${item.image}">
                     <i class="bi bi-pencil-square"></i>
-                </button>
-
-                <button class="btn btn-info btn-sm text-white"
-                    onclick='openViewModal(${JSON.stringify(item)})'>
-                    <i class="bi bi-eye"></i>
                 </button>
 
                 <button class="btn btn-warning btn-sm me-1"

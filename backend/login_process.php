@@ -63,6 +63,11 @@ if ($userRole === 'Resident' && $user['status'] === 'Pending') {
     exit();
 }
 
+if ($userRole === 'Resident' && $user['status'] === 'Rejected') {
+    echo "<script>alert('Account has been rejected.'); window.history.back();</script>";
+    exit();
+}
+
 if ($userRole === 'Barangay Staff') {
     header("Location: ../pages/admin/admin_dashboard.php");
 } else {

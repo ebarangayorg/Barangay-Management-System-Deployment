@@ -2,7 +2,13 @@
 <?php
 require_once '../../backend/config.php';
 
-$complaints = $contactsCollection->find([], ['sort' => ['date' => -1]]);
+$complaints = $contactsCollection->find(
+    ["status" => ['$ne' => "archived"]],
+    ['sort' => ['date' => -1]]
+);
+
+
+$filter = ["status" => ['$ne' => "archived"]];
 ?>
 
 <!DOCTYPE html>
@@ -24,8 +30,8 @@ $complaints = $contactsCollection->find([], ['sort' => ['date' => -1]]);
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
         <div>
-            <h3>Lorebina C. Carrasco II</h3>
-            <small>carrasco.lorebina85@gmail.com</small>
+            <h3>Anonymous 1</h3>
+            <small>admin@email.com</small>
             <div class="dept">IT Department</div>
         </div>
     </div>
@@ -63,10 +69,20 @@ $complaints = $contactsCollection->find([], ['sort' => ['date' => -1]]);
 
     <div class="content">
 
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+
         <div class="search-box">
             <input type="text" id="search-input" placeholder="Search for Subject...">
             <button id="search-btn"><i class="bi bi-search"></i></button>
         </div>
+
+        
+        <div class="add-archive-buttons">
+            <a href="admin_rec_complaints_archive.php" class="btn btn-secondary">
+                <i class="bi bi-archive"></i> Archive
+            </a>
+        </div>
+    </div>    
 
         <table id="complaintTable">
             <tr>
@@ -98,10 +114,11 @@ $complaints = $contactsCollection->find([], ['sort' => ['date' => -1]]);
                         <i class="bi bi-eye"></i>
                     </button>
 
-                    <button class="btn btn-sm btn-danger" 
-                            onclick='openDeleteModal("<?= $id ?>")'>
-                        <i class="bi bi-trash"></i>
+                    <button class="btn btn-sm btn-warning me-1 text-white"
+                            onclick="openArchiveModal('<?= $c->_id ?>')">
+                        <i class="bi bi-archive"></i>
                     </button>
+
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -124,18 +141,19 @@ $complaints = $contactsCollection->find([], ['sort' => ['date' => -1]]);
   </div>
 </div>
 
-<!-- ======================== DELETE MODAL ======================== -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
+<!-- ========== ARCHIVE MODAL ========== -->
+<div class="modal fade" id="archiveModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content p-3">
-        <h4>Delete Complaint</h4>
-        <p>Are you sure you want to delete this record?</p>
+      <h4>Archive Record</h4>
+      <p>Are you sure you want to archive this blotter record?</p>
 
-        <form action="../../backend/complaint_delete.php" method="POST">
-            <input type="hidden" name="complaint_id" id="d_id">
-            <button class="btn btn-danger" type="submit">Delete</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        </form>
+      <form action="../../backend/complaint_process.php" method="POST">
+        <input type="hidden" name="complaint_id" id="archive_id">
+        <input type="hidden" name="status" value="archived">
+        <button type="submit" class="btn btn-warning">Yes, Archive</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </form>
     </div>
   </div>
 </div>
@@ -168,9 +186,10 @@ function openViewModal(data) {
     new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 
-function openDeleteModal(id) {
-    document.getElementById('d_id').value = id;
-    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+function openArchiveModal(data) {
+
+    document.getElementById('archive_id').value = data.$id ?? data;
+    new bootstrap.Modal(document.getElementById('archiveModal')).show();
 }
 
 document.getElementById("search-input").addEventListener("keyup", function () {

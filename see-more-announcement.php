@@ -19,7 +19,7 @@ if (!$announcement) {
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title><?= htmlspecialchars($announcement->title) ?></title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -29,6 +29,15 @@ if (!$announcement) {
 <body>
 
 <?php include 'includes/nav.php'; ?>
+
+<section class="header-banner">
+    <img src="assets/img/cdologo.png" class="left-logo" alt="left logo">
+    <div class="header-text">
+        <h1>Announcement</h1> 
+        <h3>Article</h3>
+    </div>
+    <img src="assets/img/barangaygusalogo.png" class="right-logo" alt="right logo">
+</section>
 
 <section class="see-more-announcement-container">
 

@@ -18,8 +18,8 @@
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
         <div>
-            <h3>Lorebina C. Carrasco II</h3>
-            <small>carrasco.lorebina85@gmail.com</small>
+            <h3>Anonymous 1</h3>
+            <small>admin@email.com</small>
             <div class="dept">IT Department</div>
         </div>
     </div>
@@ -122,8 +122,8 @@
                     <td><?= $r->contact ?></td>
 
                     <td>
-                        <span class="status <?= $status == 'Pending' ? 'pending' : 'ready' ?>">
-                            <?= $status ?>
+                        <span class="status <?= $status == 'Pending' ? 'pending' : ($status == 'Approved' ? 'ready' : 'decline') ?>">
+                            <?= htmlspecialchars($status) ?>
                         </span>
                     </td>
 

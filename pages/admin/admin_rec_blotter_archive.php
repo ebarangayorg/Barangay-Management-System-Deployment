@@ -38,15 +38,26 @@ $incidents = $incidentsCollection->find($filter);
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
         <div>
-            <h3>Lorebina C. Carrasco II</h3>
-            <small>carrasco.lorebina85@gmail.com</small>
+            <h3>Anonymous 1</h3>
+            <small>admin@email.com</small>
             <div class="dept">IT Department</div>
         </div>
     </div>
 
     <div class="sidebar-menu">
-        <a href="admin_dashboard.php"><i class="bi bi-house-door"></i> Dashboard</a>
-        <a href="admin_rec_blotter.php"><i class="bi bi-arrow-left"></i> Back</a>
+        <div class="dropdown-container">
+            <button class="dropdown-btn">
+                <i class="bi bi-file-earmark-text"></i> Archives
+                <i class="bi bi-caret-down-fill dropdown-arrow"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="admin_announcement_archive.php"><i class="bi bi-megaphone"></i> Announcement</a>
+                <a href="admin_officials_archive.php"><i class="bi bi-people"></i> Officials</a>
+                <a href="admin_rec_complaints_archive.php"><i class="bi bi-file-earmark-text"></i> Complaints</a>
+                <a href="admin_rec_blotter_archive.php" class="active"><i class="bi bi-file-earmark-text"></i> Blotter</a>
+            </div>
+            <a href="admin_rec_blotter.php"><i class="bi bi-arrow-left"></i> Back</a>
+        </div>
     </div>
 </div>
 
@@ -58,9 +69,6 @@ $incidents = $incidentsCollection->find($filter);
 
     <div class="content">
 
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-
-            <!-- FIXED SEARCH BAR (GET REQUEST) -->
             <form method="GET" class="search-box d-flex">
                 <input type="text" name="search" class="form-control"
                        placeholder="Search for Case No., Respondent, Complainant..."
@@ -68,48 +76,48 @@ $incidents = $incidentsCollection->find($filter);
                 <button class="search-btn"><i class="bi bi-search"></i></button>
             </form>
 
-        </div>
-
-        <table>
-            <tr>
-                <th>Case No.</th>
-                <th>Respondent</th>
-                <th>Complainant</th>
-                <th>Date Filed</th>
-                <th>Subject</th>
-                <th>Action</th>
-            </tr>
-
-            <?php foreach ($incidents as $item): ?>
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td><?= $item->case_no ?></td>
-                    <td><?= $item->respondent ?></td>
-                    <td><?= $item->complainant ?></td>
-                    <td><?= date("m/d/Y", strtotime($item->date_filed)) ?></td>
-                    <td><?= $item->subject ?></td>
-
-                    <td>
-                        <!-- VIEW -->
-                        <button class="btn btn-sm btn-info me-1 text-white"
-                            onclick='openViewModal(<?= json_encode($item) ?>)'>
-                            <i class="bi bi-eye"></i>
-                        </button>
-
-                        <!-- RESTORE -->
-                        <button class="btn btn-sm btn-success me-1"
-                            onclick='openRestoreModal("<?= $item->_id ?>")'>
-                            <i class="bi bi-arrow-counterclockwise"></i>
-                        </button>
-
-                        <!-- DELETE -->
-                        <button class="btn btn-sm btn-danger"
-                            onclick='openDeleteModal("<?= $item->_id ?>")'>
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
+                    <th>Case No.</th>
+                    <th>Respondent</th>
+                    <th>Complainant</th>
+                    <th>Date Filed</th>
+                    <th>Subject</th>
+                    <th>Action</th>
                 </tr>
-            <?php endforeach; ?>
+            </thead>
+            <tbody>
+                <?php foreach ($incidents as $item): ?>
+                    <tr>
+                        <td><?= $item->case_no ?></td>
+                        <td><?= $item->respondent ?></td>
+                        <td><?= $item->complainant ?></td>
+                        <td><?= date("m/d/Y", strtotime($item->date_filed)) ?></td>
+                        <td><?= $item->subject ?></td>
 
+                        <td>
+                            <!-- VIEW -->
+                            <button class="btn btn-sm btn-info me-1 text-white"
+                                onclick='openViewModal(<?= json_encode($item) ?>)'>
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                            <!-- RESTORE -->
+                            <button class="btn btn-sm btn-success me-1"
+                                onclick='openRestoreModal("<?= $item->_id ?>")'>
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+
+                            <!-- DELETE -->
+                            <button class="btn btn-sm btn-danger"
+                                onclick='openDeleteModal("<?= $item->_id ?>")'>
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
 
         </table>
 
@@ -171,6 +179,22 @@ $incidents = $incidentsCollection->find($filter);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+}
+
+document.querySelectorAll('.dropdown-container').forEach(container => {
+    if (container.querySelector('.dropdown-content a.active')) {
+        container.classList.add('active');
+    }
+});
+
+document.querySelectorAll('.dropdown-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        this.parentElement.classList.toggle('active');
+    });
+});
+
 function openViewModal(data) {
     document.getElementById('v_case').textContent = data.case_no;
     document.getElementById('v_res').textContent = data.respondent;

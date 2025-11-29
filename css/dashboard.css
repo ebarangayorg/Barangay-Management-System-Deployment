@@ -132,15 +132,21 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 .header-logos img { width:64px; height:64px; object-fit:contain; }
 
 .content { padding: 40px; width: 100%; }
+
 .status.active {
-    color: #0f9d33; /* green */
+    color: #0f9d33;
     font-weight: bold;
 }
 
 .status.settled {
-    color: #e0a800; /* yellow */
+    color: #e0a800;
     font-weight: bold;
 }
+.status.rejected {
+    background: #d9534f !important;
+    color: #fff !important;
+}
+
 
 /* ---------- GRID ---------- */
 .grid {
