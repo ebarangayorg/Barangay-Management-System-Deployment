@@ -4,76 +4,95 @@ require_once 'config.php';
 
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
-
 $postedRole = trim($_POST['role'] ?? '');
 $isResidentForm = $postedRole === '';
+$loginPage = $isResidentForm ? '../resident_login.php' : '../admin_login.php';
 
 if (empty($email) || empty($password)) {
-    echo "<script>alert('Email and password are required'); window.history.back();</script>";
+    $_SESSION['toast'] = "Email and password are required";
+    $_SESSION['toast_type'] = "warn";
+    header("Location: $loginPage"); 
     exit();
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo "<script>alert('Invalid email format'); window.history.back();</script>";
+    $_SESSION['toast'] = "Invalid email format, please try again";
+    $_SESSION['toast_type'] = "error";
+    header("Location: $loginPage"); 
     exit();
 }
 
 $user = $usersCollection->findOne(['email' => $email]);
 
 if (!$user) {
-    echo "<script>alert('User not found'); window.history.back();</script>";
+    $_SESSION['toast'] = "User does not exist, please try again";
+    $_SESSION['toast_type'] = "error";
+    header("Location: $loginPage"); 
     exit();
 }
 
 $stored = isset($user['password']) ? (string)$user['password'] : '';
 
 if ($stored === '') {
-    echo "<script>alert('Account has no password set'); window.history.back();</script>";
+    $_SESSION['toast'] = "Account not yet registered, please try again";
+    $_SESSION['toast_type'] = "info";
+    header("Location: $loginPage"); 
     exit();
 }
 
 if (!password_verify($password, $stored)) {
-    echo "<script>alert('Incorrect password'); window.history.back();</script>";
+    $_SESSION['toast'] = "Incorrect password, please try again";
+    $_SESSION['toast_type'] = "error";
+    header("Location: $loginPage"); 
     exit();
 }
 
-$userRole = isset($user['role']) ? $user['role'] : 'Resident';
+// Determine user role
+$userRole = $user['role'] ?? 'Resident';
 
-if ($isResidentForm) {
-    if ($userRole === 'Barangay Staff') {
-        echo "<script>alert('Invalid role for this login form. Use Administrator Login.'); window.location.href='../resident_login.php';</script>";
-        exit();
-    }
-} else {
-    // Role posted (admin form)
-    if ($postedRole !== '' && $userRole !== $postedRole) {
-        echo "<script>alert('Invalid role for this account'); window.history.back();</script>";
-        exit();
-    }
+// Prevent using wrong form
+if ($isResidentForm && $userRole === 'Barangay Staff') {
+    $_SESSION['toast'] = "Invalid role, please use the correct login form";
+    $_SESSION['toast_type'] = "error";
+    header("Location: $loginPage"); 
+    exit();
 }
 
+if (!$isResidentForm && $postedRole !== $userRole) {
+    $_SESSION['toast'] = "Invalid role, please use the correct login form";
+    $_SESSION['toast_type'] = "error";
+    header("Location: $loginPage"); 
+    exit();
+}
+
+// Set session
 session_regenerate_id(true);
 $_SESSION['email'] = $user['email'];
 $_SESSION['role'] = $userRole;
 $_SESSION['user_id'] = (string)$user['_id'];  
 $_SESSION['username'] = $user['email']; 
 
-if ($userRole === 'Resident' && $user['status'] === 'Pending') {
-    echo "<script>alert('Account not yet approved. Please wait for admin approval.'); window.history.back();</script>";
-    exit();
+// Resident account status checks
+if ($userRole === 'Resident') {
+    if ($user['status'] === 'Pending') {
+        $_SESSION['toast'] = "Account is not approved yet, please wait for approval";
+        $_SESSION['toast_type'] = "warn";
+        header("Location: $loginPage"); 
+        exit();
+    }
+    if ($user['status'] === 'Rejected') {
+        $_SESSION['toast'] = "Account is rejected, please contact admin";
+        $_SESSION['toast_type'] = "error";
+        header("Location: $loginPage"); 
+        exit();
+    }
 }
 
-if ($userRole === 'Resident' && $user['status'] === 'Rejected') {
-    echo "<script>alert('Account has been rejected.'); window.history.back();</script>";
-    exit();
-}
-
+// Redirect to dashboards
 if ($userRole === 'Barangay Staff') {
     header("Location: ../pages/admin/admin_dashboard.php");
 } else {
     header("Location: ../pages/resident/resident_dashboard.php");
 }
 exit();
-
-
 ?>

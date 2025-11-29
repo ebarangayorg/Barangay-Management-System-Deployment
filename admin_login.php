@@ -29,7 +29,31 @@
     <a href="index.php">Back to Homepage</a>
   </div>
 </div>
+<div id="toast" class="toast"></div>
 
+<script>
+function showToast(message, type = "error") {
+    const t = document.getElementById("toast");
+
+    // Reset classes (VERY IMPORTANT)
+    t.className = "toast";
+
+    t.textContent = message;
+    t.classList.add(type);
+    t.classList.add("show");
+
+    setTimeout(() => {
+        t.classList.remove("show");
+    }, 3000);
+}
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<?php if (isset($_SESSION['toast'])): ?>
+<script>
+    showToast("<?= $_SESSION['toast'] ?>", "<?= $_SESSION['toast_type'] ?? 'error' ?>");
+</script>
+<?php unset($_SESSION['toast'], $_SESSION['toast_type']); endif; ?>
+
 </body>
 </html>
