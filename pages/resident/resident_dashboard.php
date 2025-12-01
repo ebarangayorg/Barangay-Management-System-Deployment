@@ -37,8 +37,8 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
     <div class="sidebar-header">
         <?php
             $profileImg = isset($resident['profile_image']) && $resident['profile_image'] !== ""
-                ? "../../assets/img/" . $resident['profile_image']
-                : "../../assets/img/profile.jpg";
+              ? "../../uploads/residents/" . $resident['profile_image']
+              : "../../assets/img/profile.jpg";
             ?>
             <img src="<?= $profileImg ?>" alt="">
 
@@ -79,7 +79,7 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
 
                 <?php
                     $profileImg = isset($resident['profile_image']) && $resident['profile_image'] !== ""
-                        ? "../../assets/img/" . $resident['profile_image']
+                        ? "../../uploads/residents/" . $resident['profile_image']
                         : "../../assets/img/profile.jpg";
                     ?>
                     <img src="<?= $profileImg ?>" alt="">
@@ -125,117 +125,88 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
 </div>
 
 <!-- UPDATE MODAL -->
-<div class="modal fade" id="updateModal">
+<div class="modal fade" id="updateModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content p-3">
 
       <div class="modal-header">
         <h5>Update Your Information</h5>
-        <button class="btn-close" data-bs-dismiss="modal"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <form action="../../backend/update_resident_self.php" method="POST" enctype="multipart/form-data">
-        
-      <div class="modal-body">
+        <div class="modal-body">
 
-        <input type="hidden" name="user_id" value="<?= $resident->_id ?>">
+          <p class="text-muted">
+            Only profile picture, name, occupation, email, and contact can be updated. <br>
+            Please contact the admin if other information is incorrect.
+          </p>
 
-        <input type="hidden" name="existing_image" value="<?= $resident['profile_image'] ?? '' ?>">
+          <input type="hidden" name="user_id" value="<?= $resident->_id ?>">
+          <input type="hidden" name="existing_image" value="<?= $resident['profile_image'] ?? '' ?>">
 
-        <div class="row g-2">
+          <!-- Profile Picture -->
+          <div class="mb-3">
+            <label>Profile Picture:</label>
+            <input type="file" class="form-control" name="profile_image" accept="image/*">
+            <img id="edit-preview" class="preview-img mt-2" src="" style="display:none; max-width: 200px;">
+          </div>
 
-            <div class="col-md-12">
-                <label>Profile Picture:</label>
-                <input type="file" class="form-control" name="profile_image" accept="image/*">
+          <!-- Editable fields -->
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
+              <label>First Name:</label>
+              <input class="form-control" name="fname" value="<?= $resident->first_name ?>">
             </div>
-
-          <div class="col-md-4">First Name:
-            <input class="form-control" name="fname" value="<?= $resident->first_name ?>">
+            <div class="col-md-6">
+              <label>Middle Name:</label>
+              <input class="form-control" name="mname" value="<?= $resident->middle_name ?>">
+            </div>
+            <div class="col-md-6">
+              <label>Last Name:</label>
+              <input class="form-control" name="lname" value="<?= $resident->last_name ?>">
+            </div>
+            <div class="col-md-6">
+              <label>Occupation:</label>
+              <input class="form-control" name="occupation" value="<?= $resident->occupation ?>">
+            </div>
+            <div class="col-md-6">
+              <label>Email:</label>
+              <input class="form-control" name="email" value="<?= $resident->email ?>">
+            </div>
+            <div class="col-md-6">
+              <label>Contact:</label>
+              <input class="form-control" name="contact" value="<?= $resident->contact ?>">
+            </div>
           </div>
 
-          <div class="col-md-4">Middle Name:
-            <input class="form-control" name="mname" value="<?= $resident->middle_name ?>">
-          </div>
+          <hr>
 
-          <div class="col-md-4">Last Name:
-            <input class="form-control" name="lname" value="<?= $resident->last_name ?>">
-          </div>
-
-          <div class="col-md-4">Suffix:
-            <input class="form-control" name="sname" value="<?= $resident->suffix ?>">
-          </div>
-
-          <div class="col-md-4">Gender:
-            <select class="form-control" name="gender">
-              <option <?= $resident->gender == "Male" ? 'selected' : '' ?>>Male</option>
-              <option <?= $resident->gender == "Female" ? 'selected' : '' ?>>Female</option>
-            </select>
-          </div>
-
-          <div class="col-md-4">Birthdate:
-            <input type="date" class="form-control" name="bdate" value="<?= $resident->birthdate ?>">
-          </div>
-
-          <div class="col-md-4">Birthplace:
-            <input class="form-control" name="bplace" value="<?= $resident->birthplace ?>">
-          </div>
-
-          <div class="col-md-4">Purok:
-            <select class="form-control" name="purok">
-              <?php for ($i=1; $i<=5; $i++): ?>
-                <option <?= $resident->purok == "Purok $i" ? 'selected' : '' ?>>Purok <?= $i ?></option>
-              <?php endfor; ?>
-            </select>
-          </div>
-
-          <div class="col-md-4">Contact:
-            <input class="form-control" name="contact" value="<?= $resident->contact ?>">
-          </div>
-
-          <div class="col-md-4">Occupation:
-            <input class="form-control" name="occupation" value="<?= $resident->occupation ?>">
-          </div>
-
-          <div class="col-md-4">Resident Since:
-            <input class="form-control" name="resident_since" value="<?= $resident->resident_since ?>">
-          </div>
-
-          <div class="col-md-4">Email:
-            <input class="form-control" name="email" value="<?= $resident->email ?>" readonly>
-          </div>
-
-          <div class="col-md-4">Voter:
-            <select class="form-control" name="voter_status">
-              <option <?= $resident->voter == "Yes" ? 'selected' : '' ?>>Yes</option>
-              <option <?= $resident->voter == "No" ? 'selected' : '' ?>>No</option>
-            </select>
-          </div>
-
-          <div class="col-md-4">Income:
-            <input class="form-control" name="income" value="<?= $resident->income ?>">
-          </div>
-
-          <div class="col-md-4">Family Head:
-            <select class="form-control" name="family_head">
-              <option <?= $resident->family_head == "Yes" ? 'selected' : '' ?>>Yes</option>
-              <option <?= $resident->family_head == "No" ? 'selected' : '' ?>>No</option>
-            </select>
+          <!-- Read-only preview in grid -->
+          <h5>Other Information (Preview)</h5>
+          <div class="row g-2">
+            <div class="col-md-6"><b>Suffix:</b> <?= $resident->suffix ?></div>
+            <div class="col-md-6"><b>Gender:</b> <?= $resident->gender ?></div>
+            <div class="col-md-6"><b>Birthdate:</b> <?= date("F j, Y", strtotime($resident->birthdate)) ?></div>
+            <div class="col-md-6"><b>Birthplace:</b> <?= $resident->birthplace ?></div>
+            <div class="col-md-6"><b>Purok:</b> <?= $resident->purok ?></div>
+            <div class="col-md-6"><b>Resident Since:</b> <?= $resident->resident_since ?></div>
+            <div class="col-md-6"><b>Voter:</b> <?= $resident->voter ?></div>
+            <div class="col-md-6"><b>Income:</b> <?= $resident->income ?></div>
+            <div class="col-md-6"><b>Family Head:</b> <?= $resident->family_head ?></div>
           </div>
 
         </div>
 
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-success">Save Changes</button>
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Save Changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
 
       </form>
     </div>
   </div>
 </div>
-
 
 
 <script src="../../assets/js/calendar.js"></script>
@@ -262,6 +233,34 @@ function openUpdateModal(data) {
     document.getElementById("u_income").value = data.income;
     document.getElementById("u_family_head").value = data.family_head;
 }
+
+document.querySelector('#updateModal form').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // prevent Enter from submitting
+    }
+});
+
+const updateModal = document.getElementById('updateModal');
+updateModal.addEventListener('hidden.bs.modal', () => {
+    const fileInput = updateModal.querySelector("input[name='profile_image']");
+    const preview = document.getElementById("edit-preview");
+
+    fileInput.value = "";       // clear file input
+    preview.src = "";           // remove preview
+    preview.style.display = "none";
+});
+
+document.querySelector("input[name='profile_image']").addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById("edit-preview");
+
+    if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+    } else {
+        preview.style.display = "none";
+    }
+});
 </script>
 
 </body>

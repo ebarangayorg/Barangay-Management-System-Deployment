@@ -207,7 +207,7 @@ document.querySelectorAll('.dropdown-btn').forEach(btn => {
 function openViewModal(data) {
     document.getElementById('v_name').textContent = data.name;
     document.getElementById('v_position').textContent = data.position;
-    document.getElementById('v_image').src = data.image ? `../../assets/officials/${data.image}` : '';
+    document.getElementById('v_image').src = data.image ? `../../uploads/officials/${data.image}` : '';
     new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 
@@ -218,7 +218,7 @@ function openEditModal(button) {
 
     const editPreview = document.getElementById('edit-preview');
     if(button.dataset.image){
-        editPreview.src = `../../assets/officials/${button.dataset.image}`;
+        editPreview.src = `../../uploads/officials/${button.dataset.image}`;
         editPreview.style.display = "block";
     } else {
         editPreview.style.display = "none";
@@ -266,7 +266,7 @@ function renderTable(data) {
     data.forEach(item => {
         table += `
         <tr>
-            <td><img src="../../assets/officials/${item.image}" style="width:300px;height:200px;object-fit:cover;border-radius:5px;"></td>
+            <td><img src="../../uploads/officials/${item.image}"style="width:300px;height:200px;object-fit:cover;border-radius:5px;"></td>
             <td>${item.name}</td>
             <td>${item.position}</td>
             <td>

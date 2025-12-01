@@ -48,7 +48,7 @@ fetch('backend/officials_get.php')
         container.innerHTML += `
         <div class="col-md-4">
             <div class="card announcement-card p-3 text-center">
-                <img src="assets/officials/${official.image}" style="width:100%; height:auto; border-radius:5px;">
+                <img src="uploads/officials/${official.image}" style="width:100%; height:auto; border-radius:5px;">
                 <div>
                     <h6 class="mt-2 fw-bold">${official.name}</h6>
                     <p class="mt-2">${official.position}</p>

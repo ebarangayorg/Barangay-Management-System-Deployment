@@ -59,11 +59,20 @@
     </div>
 
     <div class="content">
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Search for Resident Name...">
-            <button id="search-btn"><i class="bi bi-search"></i></button>
-        </div>
 
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search for Resident Name...">
+                <button id="search-btn"><i class="bi bi-search"></i></button>
+            </div>
+
+            <div class="print-button">
+                <a href="admin_rec_residents_print.php" target="_blank" class="btn btn-primary">
+                    <i class="bi bi-printer"></i> Print
+                </a>
+            </div>  
+        </div>
 
         <table id="residentTable">
             <tr>

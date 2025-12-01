@@ -4,17 +4,26 @@ require_once "config.php";
 $id = $_POST["id"];
 $name = $_POST["name"] ?? null;
 $position = $_POST["position"] ?? null;
-$status = $_POST["status"] ?? null; 
+$status = $_POST["status"] ?? null;
 
 $updateData = [];
 
 if ($name) $updateData["name"] = $name;
 if ($position) $updateData["position"] = $position;
-if ($status) $updateData["status"] = $status; 
+if ($status) $updateData["status"] = $status;
 
+// HANDLE IMAGE UPLOAD
 if (!empty($_FILES["photo"]["name"])) {
+
+    // Ensure folder exists
+    $uploadDir = "../uploads/officials/";
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
     $filename = time() . "_" . basename($_FILES["photo"]["name"]);
-    $target = "../assets/officials/" . $filename;
+    $target = $uploadDir . $filename;
+
     move_uploaded_file($_FILES["photo"]["tmp_name"], $target);
 
     $updateData["image"] = $filename;

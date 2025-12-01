@@ -9,7 +9,7 @@ $id = $_POST["blotter_id"];
 
 $updateFields = [];
 
-$allowedFields = ["case_no", "date_filed", "complainant", "respondent", "subject", "description", "status"];
+$allowedFields = ["case_no", "date_filed", "date_happened", "complainant", "respondent", "subject", "description", "status"];
 
 foreach ($allowedFields as $field) {
     if (isset($_POST[$field]) && $_POST[$field] !== "") {

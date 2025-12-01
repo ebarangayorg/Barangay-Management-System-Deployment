@@ -109,8 +109,8 @@ $filter = ["status" => "archived"];
                         </button>
                     </td>
                 </tr>
-                <?php endforeach; ?>
             </tbody>
+            <?php endforeach; ?>
         </table>
     </div>
 </div>
