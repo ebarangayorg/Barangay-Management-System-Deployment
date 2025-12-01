@@ -116,8 +116,8 @@ $announcements = $announcementCollection->find($filter);
                         </button>
                     </td>
                 </tr>
+                </tbody>
             <?php endforeach; ?>
-            </tbody>
         </table>
     </div>
 </div>

@@ -16,6 +16,7 @@ if (!empty($searchQuery)) {
     ];
 }
 
+/* FIX: Use the correct collection name */
 $incidents = $incidentsCollection->find($filter);
 ?>
 
@@ -34,6 +35,7 @@ $incidents = $incidentsCollection->find($filter);
 
 <body>
 
+<!-- SIDEBAR -->
 <div class="sidebar">
     <div class="sidebar-header">
         <img src="../../assets/img/profile.jpg" alt="">
@@ -50,17 +52,17 @@ $incidents = $incidentsCollection->find($filter);
         <a href="admin_officials.php"><i class="bi bi-people"></i> Officials</a>
         <a href="admin_issuance.php"><i class="bi bi-bookmark"></i> Issuance</a>
 
-        <div class="dropdown-container">
-          <button class="dropdown-btn">
-              <i class="bi bi-file-earmark-text"></i> Records
-              <i class="bi bi-caret-down-fill dropdown-arrow"></i>
-          </button>
-          <div class="dropdown-content">
-              <a href="admin_rec_residents.php">Residents</a>
-              <a href="admin_rec_complaints.php">Complaints</a>
-              <a href="admin_rec_blotter.php" class="active">Blotter</a>
-          </div>
-      </div>
+        <div class="dropdown-container active">
+            <button class="dropdown-btn">
+                <i class="bi bi-file-earmark-text"></i> Records
+                <i class="bi bi-caret-down-fill dropdown-arrow"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="admin_rec_residents.php">Residents</a>
+                <a href="admin_rec_complaints.php">Complaints</a>
+                <a href="admin_rec_blotter.php" class="active">Blotter</a>
+            </div>
+        </div>
 
         <a href="../../backend/logout.php"><i class="bi bi-box-arrow-left"></i> Logout</a>
     </div>
@@ -82,9 +84,9 @@ $incidents = $incidentsCollection->find($filter);
 
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
-            <!-- Search Bar -->
+            <!-- SEARCH -->
             <form method="GET" class="search-box d-flex">
-                <input type="text" name="search" class="form-control" 
+                <input type="text" name="search" class="form-control"
                     placeholder="Search for Case No., Respondent, Complainant..."
                     value="<?= htmlspecialchars($searchQuery) ?>">
                 <button class="search-btn"><i class="bi bi-search"></i></button>
@@ -98,9 +100,9 @@ $incidents = $incidentsCollection->find($filter);
                     <i class="bi bi-archive"></i> Archive
                 </a>
             </div>
-
         </div>
 
+        <!-- TABLE -->
         <table>
             <tr>
                 <th>Case No.</th>
@@ -113,42 +115,43 @@ $incidents = $incidentsCollection->find($filter);
             </tr>
 
             <?php foreach ($incidents as $incident): ?>
+                <?php 
+                    $data = json_encode([
+                        "_id" => (string)$incident->_id,
+                        "case_no" => $incident->case_no,
+                        "respondent" => $incident->respondent,
+                        "complainant" => $incident->complainant,
+                        "date_filed" => $incident->date_filed ?? "",
+                        "date_happened" => $incident->date_happened ?? "",
+                        "subject" => $incident->subject,
+                        "description" => $incident->description,
+                        "status" => $incident->status
+                    ]);
+                ?>
                 <tr>
                     <td><?= $incident->case_no ?></td>
                     <td><?= $incident->respondent ?></td>
                     <td><?= $incident->complainant ?></td>
-                    <td>
-                        <?= !empty($incident->date_filed) 
-                            ? date("m/d/Y", strtotime($incident->date_filed)) 
-                            : "—" ?>
-                    </td>
-
+                    <td><?= !empty($incident->date_filed) ? date("Y-m-d", strtotime($incident->date_filed)) : "—" ?></td>
                     <td><?= $incident->subject ?></td>
+                    <td><span class="status <?= strtolower($incident->status) ?>"><?= ucfirst($incident->status) ?></span></td>
                     <td>
-                        <span class="status <?= strtolower($incident->status) ?>">
-                            <?= ucfirst($incident->status) ?>
-                        </span>
-                    </td>
-                    <td>
-
                         <!-- VIEW -->
-                        <button class="btn btn-sm btn-info me-1 text-white"
-                                onclick='openViewModal(<?= json_encode($incident) ?>)'>
-                            <i class="bi bi-eye"></i>
-                        </button>
+                        <a href="admin_rec_blotter_print.php?id=<?= $incident->_id ?>" 
+                           target="_blank"
+                           class="btn btn-sm btn-info text-white me-1">
+                           <i class="bi bi-eye"></i>
+                        </a>
 
                         <!-- EDIT -->
-                        <button class="btn btn-sm btn-primary me-1"
-                                onclick='openEditModal(<?= json_encode($incident) ?>)'>
+                        <button class="btn btn-sm btn-primary me-1 edit-btn" data-incident='<?= $data ?>'>
                             <i class="bi bi-pencil-square"></i>
                         </button>
 
                         <!-- ARCHIVE -->
-                        <button class="btn btn-sm btn-warning me-1 text-white"
-                                onclick="openArchiveModal('<?= $incident->_id ?>')">
+                        <button class="btn btn-sm btn-warning text-white archive-btn" data-id="<?= (string)$incident->_id ?>">
                             <i class="bi bi-archive"></i>
                         </button>
-
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -158,79 +161,70 @@ $incidents = $incidentsCollection->find($filter);
 
 </div>
 
-<!-- ========== VIEW MODAL ========== -->
-<div class="modal fade" id="viewModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content p-3">
-        <h4>Blotter Details</h4>
-
-        <p><b>Case No:</b> <span id="v_case"></span></p>
-        <p><b>Respondent:</b> <span id="v_res"></span></p>
-        <p><b>Complainant:</b> <span id="v_comp"></span></p>
-        <p><b>Date Filed:</b> <span id="v_date"></span></p>
-        <p><b>Subject:</b> <span id="v_subject"></span></p>
-        <p><b>Description:</b></p>
-        <p id="v_desc" class="border p-2"></p>
-
-        <button class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button>
-    </div>
-  </div>
-</div>
-
-<!-- ========== ADD MODAL ========== -->
+<!-- ADD MODAL (unchanged) -->
 <div class="modal fade" id="addModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content p-3">
-      <h4>Add New Blotter</h4>
+    <div class="modal-content p-3">  
+      <h4>Add New Blotter Record</h4>
 
-      <form action="../../backend/blotter_add.php" method="POST">
-
+      <form action="../../backend/blotter_add.php" method="POST"> 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6">  
             <label>Case No.</label>
             <input type="text" name="case_no" class="form-control" required>
           </div>
+        </div>  
 
-          <div class="col-md-6">
+        <div class="row mt-3">
+          <div class="col-md-6">  
             <label>Date Filed</label>
             <input type="date" name="date_filed" class="form-control" required>
+          </div>
+          <div class="col-md-6">  
+            <label>Date Happened</label>
+            <input type="date" name="date_happened" class="form-control">
           </div>
         </div>
 
         <div class="row mt-3">
-          <div class="col-md-6">
+          <div class="col-md-6">  
             <label>Complainant</label>
             <input type="text" name="complainant" class="form-control" required>
           </div>
-
-          <div class="col-md-6">
+          <div class="col-md-6">  
             <label>Respondent</label>
             <input type="text" name="respondent" class="form-control" required>
           </div>
         </div>
 
-        <div class="mt-3">
-          <label>Subject</label>
-          <input type="text" name="subject" class="form-control" required>
-        </div>
+          <div class="mt-3">
+            <label>Subject</label>
+            <input type="text" name="subject" class="form-control" required>
+          </div>
 
-        <div class="mt-3">
-          <label>Description</label>
-          <textarea name="description" class="form-control" rows="4" required></textarea>
-        </div>
+          <div class="mt-3">
+            <label>Description</label>
+            <textarea name="description" class="form-control" required></textarea>
+          </div>
+
+          <div class="mt-3">
+          <label>Status</label>
+            <select name="status" class="form-control" required>
+              <option value="open">Active</option>
+              <option value="closed">Settled</option>
+            </select>
+          </div>
 
         <div class="mt-3 text-end">
-          <button class="btn btn-success" type="submit">Save</button>
+          <button class="btn btn-success" type="submit">Save Changes</button>
           <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
         </div>
-
       </form>
-
     </div>
   </div>
 </div>
 
-<!-- ========== EDIT MODAL ========== -->
+<!-- EDIT MODAL -->
 <div class="modal fade" id="editModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content p-3">
@@ -245,10 +239,16 @@ $incidents = $incidentsCollection->find($filter);
             <label>Case No.</label>
             <input type="text" name="case_no" id="e_case" class="form-control" required>
           </div>
+        </div>
 
+        <div class="row mt-3">
           <div class="col-md-6">
             <label>Date Filed</label>
             <input type="date" name="date_filed" id="e_date" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label>Date Happened</label>
+            <input type="date" name="date_happened" id="e_happened" class="form-control" required>
           </div>
         </div>
 
@@ -257,7 +257,6 @@ $incidents = $incidentsCollection->find($filter);
             <label>Complainant</label>
             <input type="text" name="complainant" id="e_comp" class="form-control" required>
           </div>
-
           <div class="col-md-6">
             <label>Respondent</label>
             <input type="text" name="respondent" id="e_res" class="form-control" required>
@@ -293,7 +292,7 @@ $incidents = $incidentsCollection->find($filter);
   </div>
 </div>
 
-<!-- ========== ARCHIVE MODAL ========== -->
+<!-- ARCHIVE MODAL -->
 <div class="modal fade" id="archiveModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content p-3">
@@ -317,50 +316,42 @@ function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
 
-document.querySelectorAll('.dropdown-container').forEach(container => {
-    if (container.querySelector('.dropdown-content a.active')) {
-        container.classList.add('active');
-    }
-});
+// Normalize dates to YYYY-MM-DD
+function normalizeDate(val) {
+    if (!val) return "";
+    if (typeof val === "object" && val.$date) return val.$date.split("T")[0];
+    if (typeof val === "string" && val.includes("T")) return val.split("T")[0];
+    return val;
+}
 
-document.querySelectorAll('.dropdown-btn').forEach(btn => {
+// EDIT MODAL
+document.querySelectorAll('.edit-btn').forEach(btn => {
     btn.addEventListener('click', function () {
-        this.parentElement.classList.toggle('active');
+        const d = JSON.parse(this.dataset.incident);
+
+        document.getElementById('e_id').value = d._id;
+        document.getElementById('e_case').value = d.case_no;
+
+        document.getElementById('e_date').value = normalizeDate(d.date_filed);
+        document.getElementById('e_happened').value = normalizeDate(d.date_happened);
+
+        document.getElementById('e_comp').value = d.complainant;
+        document.getElementById('e_res').value = d.respondent;
+        document.getElementById('e_subject').value = d.subject;
+        document.getElementById('e_desc').value = d.description;
+        document.getElementById('e_status').value = d.status;
+
+        new bootstrap.Modal(document.getElementById('editModal')).show();
     });
 });
 
-function openViewModal(data) {
-    document.getElementById('v_case').textContent = data.case_no;
-    document.getElementById('v_res').textContent = data.respondent;
-    document.getElementById('v_comp').textContent = data.complainant;
-    document.getElementById('v_date').textContent = data.date_filed;
-    document.getElementById('v_subject').textContent = data.subject;
-    document.getElementById('v_desc').textContent = data.description;
-
-    new bootstrap.Modal(document.getElementById('viewModal')).show();
-}
-
-function openEditModal(data) {
-
-    document.getElementById('e_id').value = data._id.$oid;
-
-    document.getElementById('e_case').value = data.case_no;
-    document.getElementById('e_date').value = data.date_filed;
-    document.getElementById('e_comp').value = data.complainant;
-    document.getElementById('e_res').value = data.respondent;
-    document.getElementById('e_subject').value = data.subject;
-    document.getElementById('e_desc').value = data.description;
-    document.getElementById('e_status').value = data.status;
-
-    new bootstrap.Modal(document.getElementById('editModal')).show();
-}
-
-function openArchiveModal(data) {
-
-    document.getElementById('archive_id').value = data.$oid ?? data;
-    new bootstrap.Modal(document.getElementById('archiveModal')).show();
-}
-
+// ARCHIVE MODAL
+document.querySelectorAll('.archive-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        document.getElementById('archive_id').value = this.dataset.id;
+        new bootstrap.Modal(document.getElementById('archiveModal')).show();
+    });
+});
 </script>
 
 </body>

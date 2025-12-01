@@ -86,7 +86,7 @@ $officials = $officialsCollection->find($filter);
                 <tr>
                     <td>
                         <?php if (!empty($item->image)): ?>
-                            <img src="../../assets/officials/<?= $item->image ?>" style="width:300px;height:200px;object-fit:cover;border-radius:5px;">
+                            <img src="../../uploads/officials/<?= $item->image ?>" style="width:300px;height:200px;object-fit:cover;border-radius:5px;">
                         <?php endif; ?>
                     </td>
                     <td><?= $item->name ?></td>
@@ -111,8 +111,8 @@ $officials = $officialsCollection->find($filter);
                         </button>
                     </td>
                 </tr>
-            <?php endforeach; ?>
             </tbody>
+            <?php endforeach; ?>
         </table>
     </div>
 </div>
@@ -184,7 +184,7 @@ document.querySelectorAll('.dropdown-btn').forEach(btn => {
 function openViewModal(data) {
     document.getElementById('v_name').textContent = data.name;
     document.getElementById('v_position').textContent = data.position;
-    document.getElementById('v_image').src = data.image ? `../../assets/officials/${data.image}` : '';
+    document.getElementById('v_image').src = data.image ? `../../uploads/officials/${data.image}` : '';
     new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 

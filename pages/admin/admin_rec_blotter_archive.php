@@ -76,6 +76,8 @@ $incidents = $incidentsCollection->find($filter);
                 <button class="search-btn"><i class="bi bi-search"></i></button>
             </form>
 
+            
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -116,8 +118,8 @@ $incidents = $incidentsCollection->find($filter);
                             </button>
                         </td>
                     </tr>
+                    </tbody>
                 <?php endforeach; ?>
-            </tbody>
 
         </table>
 
@@ -134,6 +136,7 @@ $incidents = $incidentsCollection->find($filter);
         <p><b>Respondent:</b> <span id="v_res"></span></p>
         <p><b>Complainant:</b> <span id="v_comp"></span></p>
         <p><b>Date Filed:</b> <span id="v_date"></span></p>
+        <p><b>Date Happened:</b> <span id="v_happened"></span></p>
         <p><b>Subject:</b> <span id="v_subject"></span></p>
         <p><b>Description:</b></p>
         <p id="v_desc" class="border p-2"></p>
@@ -200,6 +203,7 @@ function openViewModal(data) {
     document.getElementById('v_res').textContent = data.respondent;
     document.getElementById('v_comp').textContent = data.complainant;
     document.getElementById('v_date').textContent = data.date_filed;
+    document.getElementById('v_happened').textContent = data.date_happened;
     document.getElementById('v_subject').textContent = data.subject;
     document.getElementById('v_desc').textContent = data.description;
 
