@@ -68,7 +68,7 @@ $announcements = iterator_to_array($announcementCollection->find($filter));
             <input type="text" name="search" class="form-control"
                    placeholder="Search by Title or Details..."
                    value="<?= htmlspecialchars($searchQuery) ?>">
-            <button class="search-btn btn btn-primary ms-2"><i class="bi bi-search"></i></button>
+            <button class="search-btn"><i class="bi bi-search"></i></button>
         </form>
 
         <table class="table table-striped">
