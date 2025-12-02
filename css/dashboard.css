@@ -456,8 +456,10 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 
         /* TABLE */
         table {
-            table-layout: fixed;
-            width: 100%;
+            width: 95%;
+            margin: 0 auto 40px auto;
+            border-collapse: collapse;
+            background: white;
         }
 
         th, td {
