@@ -16,7 +16,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto" style="margin-right: -95px;">
+            <ul class="navbar-nav ms-auto" style="margin-right: -60px;">
 
                 <li class="nav-item"><a href="index.php" class="nav-link <?= ($currentPage=='index.php'?'active':'') ?>">Home</a></li>
                 <li class="nav-item"><a href="announcement.php" class="nav-link <?= ($currentPage=='announcement.php'?'active':'') ?>">Announcements</a></li>
@@ -27,13 +27,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
                 <?php if (isset($_SESSION['email']) && ($_SESSION['status'] ?? '') === 'Approved'): ?>
                     <li class="nav-item">
-                        <a href="pages/resident/resident_dashboard.php" class="btn btn-success ms-3">
+                        <a href="pages/resident/resident_dashboard.php" class="btn btn-success">
                             My Account 
                         </a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a href="resident_login.php" class="btn btn-success ms-3">Login</a>
+                        <a href="resident_login.php" class="btn btn-success ">Login</a>
                     </li>
                 <?php endif; ?>
             </ul>

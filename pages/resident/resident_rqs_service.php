@@ -1,4 +1,23 @@
-<?php require_once '../../backend/auth_resident.php'; ?>
+<?php
+require_once '../../backend/auth_resident.php';
+require_once '../../backend/config.php';
+
+$email = $_SESSION['email'];
+$user = $usersCollection->findOne(['email' => $email]);
+
+if (!$user) {
+    die("Error: User not found.");
+}
+
+$resident = $residentsCollection->findOne(['user_id' => $user['_id']]);
+
+if (!$resident) {
+    die("Error: Resident record not found.");
+}
+
+$userId = (string)$user['_id'];
+$residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,10 +35,16 @@
 
 <div class="sidebar">
     <div class="sidebar-header">
-        <img src="../../assets/img/profile.jpg" alt="">
+        <?php
+            $profileImg = isset($resident['profile_image']) && $resident['profile_image'] !== ""
+              ? "../../uploads/residents/" . $resident['profile_image']
+              : "../../assets/img/profile.jpg";
+            ?>
+            <img src="<?= $profileImg ?>" alt="">
+
         <div>
-            <h3>Lorebina C. Carrasco II</h3>
-            <small>carrasco.lorebina85@gmail.com</small>
+            <h3><?= $resident['first_name'] . " " . $resident['last_name'] ?></h3>
+            <small><?= $resident['email'] ?></small>
         </div>
     </div>
 

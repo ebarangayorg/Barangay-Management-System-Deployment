@@ -32,6 +32,7 @@ $residentsCollection->updateOne(
         "occupation" => $_POST["occupation"],
         "contact" => $_POST["contact"],
         "email" => $_POST["email"],
+        "civil_status" => $_POST["civil_status"],
         "profile_image" => $finalImageName,
     ]]
 );
