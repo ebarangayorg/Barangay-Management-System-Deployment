@@ -25,10 +25,11 @@ class PDF extends FPDF {
         $this->SetFillColor(200,200,200);
 
         // widths for 9 columns
-        $this->widths = [40,20,25,30,20,30,25,20,30]; 
+        $this->widths = [35,15,20,20,25,18,18,20,15,30]; 
+        $this->adjustWidths();
         $this->adjustWidths();
 
-        $header = ['Full Name','Gender','Birthdate','Birthplace','Purok','Contact','Occupation','Voter','Email',];
+        $header = ['Full Name','Gender','Civil Status','Birthdate','Birthplace','Purok','Contact','Occupation','Voter','Email',];
         foreach($header as $i=>$col){
             $this->Cell($this->widths[$i],8,$col,1,0,'C', true);
         }
@@ -112,6 +113,7 @@ foreach($residents as $r){
     $row = [
         $fullName,
         $r->gender ?? '',
+        $r->civil_status ?? '',
         $r->birthdate ?? '',
         $r->birthplace ?? '',
         $r->purok ?? '',

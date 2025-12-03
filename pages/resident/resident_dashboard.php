@@ -82,17 +82,17 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
                         ? "../../uploads/residents/" . $resident['profile_image']
                         : "../../assets/img/profile.jpg";
                     ?>
-                    <img src="<?= $profileImg ?>" alt="">
+                    <img src="<?= $profileImg ?>" alt="" style="margin-top:-25px;border-radius: 20px;">
 
 
-                <strong><?= $resident['first_name'] . " " . $resident['last_name'] ?></strong><br>
+                <strong style="margin-top:8px;"><?= $resident['first_name'] . " " . $resident['last_name'] ?></strong><br>
 
-                <p>Email: <?= $resident['email'] ?></p>
-                <p>Occupation: <?= $resident['occupation'] ?></p>
-                <p>Family Income: <?= $resident['income'] ?></p>
-                <p>Resident Since: <?= $resident['resident_since'] ?></p>
+                <p><b>Email:</b> <?= $resident['email'] ?></p>
+                <p><b>Occupation:</b> <?= $resident['occupation'] ?></p>
+                <p><b>Family Income:</b> <?= $resident['income'] ?></p>
+                <p><b>Resident Since:</b> <?= $resident['resident_since'] ?></p>
 
-                <strong style="color:#2E9F43">Account
+                <strong style="color:#2E9F43;">Account
                     <?= $user['status'] ?>
                 </strong>
 
@@ -113,10 +113,9 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
                     <div class="calendar-grid" id="calendar-grid"></div>
                 </section>
 
-                <div class="events">
-                    <h3>EVENTS</h3>
-                    <p>No events for today...</p>
-                </div>
+                <article class="timeline" id="timeline-events" style="margin-top:30px">
+                    <p>Loading events...</p>
+                </article>
             </div>
 
         </div>
@@ -138,7 +137,7 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
         <div class="modal-body">
 
           <p class="text-muted">
-            Only profile picture, name, occupation, email, and contact can be updated. <br>
+            Only profile picture, name, occupation, civil, email, and contact can be updated. <br>
             Please contact the admin if other information is incorrect.
           </p>
 
@@ -178,6 +177,15 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
               <label>Contact:</label>
               <input class="form-control" name="contact" value="<?= $resident->contact ?>">
             </div>
+            <div class="col-md-6">
+              <label>Civil Status:</label>
+              <select class="form-control" name="civil_status">
+                <option value="Single"     <?= ($resident->civil_status == "Single") ? "selected" : "" ?>>Single</option>
+                <option value="Married"    <?= ($resident->civil_status == "Married") ? "selected" : "" ?>>Married</option>
+                <option value="Separated"  <?= ($resident->civil_status == "Separated") ? "selected" : "" ?>>Separated</option>
+                <option value="Widowed"    <?= ($resident->civil_status == "Widowed") ? "selected" : "" ?>>Widowed</option>
+              </select>
+            </div>
           </div>
 
           <hr>
@@ -215,6 +223,24 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
 function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
+fetch("../../backend/announcement_get_dashboard.php")
+    .then(res => res.json())
+    .then(data => {
+        let timelineHTML = "";
+
+        data.forEach(event => {
+            timelineHTML += `
+                <div class="timeline-event mb-3">
+                    <strong class="event-title">${event.title}</strong><br>
+                    <span class="event-location"><i class="bi bi-geo-alt-fill me-1"></i>${event.location}</span><br>
+                    <span class="event-datetime"><i class="bi bi-calendar-event me-1"></i>${event.time} | ${event.date}</span>
+                </div>
+            `;
+        });
+
+        document.getElementById("timeline-events").innerHTML =
+            timelineHTML || "<p>No upcoming announcements.</p>";
+    });
 function openUpdateModal(data) {
     document.getElementById("u_resident_id").value = data._id;
     document.getElementById("u_fname").value = data.first_name;
@@ -261,32 +287,6 @@ document.querySelector("input[name='profile_image']").addEventListener("change",
         preview.style.display = "none";
     }
 });
-</script>
-<script>
-async function loadEvents() {
-    const res = await fetch("../../backend/calendar_events.php");
-    const events = await res.json();
-
-    let eventsList = document.querySelector(".events");
-    if (!eventsList) return;
-
-    eventsList.innerHTML = "<h3>EVENTS</h3>";
-
-    events.forEach(event => {
-        eventsList.innerHTML += `
-            <div class="event-item">
-                <strong>${event.title}</strong><br>
-                ${event.details}<br>
-                📍 ${event.location}<br>
-                📅 ${event.date} ⏰ ${event.time}<br>
-                ${event.image ? `<img src="${event.image}" style="max-width:100px;">` : ""}
-                <hr>
-            </div>
-        `;
-    });
-}
-
-window.onload = loadEvents;
 </script>
 
 </body>

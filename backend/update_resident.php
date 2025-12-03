@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "purok" => $_POST["purok"],
             "occupation" => $_POST["occupation"],
             "resident_since" => $_POST["resident_since"],
+            "civil_status" => $_POST["civil_status"],
 
             "email" => $_POST["email"],
             "contact" => $_POST["contact"],

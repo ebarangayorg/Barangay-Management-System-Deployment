@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>BMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" href="assets/img/BMS.png">
     <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -41,81 +42,14 @@
 
             <div class="calendar-grid" id="calendar-grid"></div>
 
-            <div id="event-labels" style="display:none;">
-
-                <div data-day="3" class="event-label">
-                    <span class="event-dot"></span> Clean-Up Drive
-                </div>
-
-                <div data-day="6" class="event-label">
-                    <span class="event-dot"></span> Health Check-Up
-                </div>
-
-                <div data-day="9" class="event-label">
-                    <span class="event-dot"></span> Seniors’ Assembly
-                </div>
-
-                <div data-day="12" class="event-label">
-                    <span class="event-dot"></span> Sports League
-                </div>
-
-                <div data-day="22" class="event-label">
-                    <span class="event-dot"></span> PWD Payout
-                </div>
-
-                <div data-day="24" class="event-label">
-                    <span class="event-dot"></span> Tree Planting
-                </div>
-
-                <div data-day="31" class="event-label">
-                    <span class="event-dot"></span> Halloween Party
-                </div>
-
-            </div>
-
         </div>
 
         <div class="col-lg-5 col-md-12">
             <h3 class="fw-bold mb-3">TIMELINE OF <span style="color:#3cbf4c;">EVENTS</span></h3>
 
-            <ul class="timeline-list">
-
-                <li>
-                    <strong>Barangay Clean-Up Drive – Coastal & Riverside Areas</strong><br>
-                    <small>October 3, 2025 (7:00 AM – 11:00 AM)</small>
-                </li>
-
-                <li>
-                    <strong>Barangay Health Check-Up – Covered Court</strong><br>
-                    <small>October 6, 2025</small>
-                </li>
-
-                <li>
-                    <strong>Senior Citizens’ General Assembly – Barangay Hall</strong><br>
-                    <small>October 9, 2025 (1:00 PM – 4:00 PM)</small>
-                </li>
-
-                <li>
-                    <strong>Youth Sports League Opening – Gusa Covered Court</strong><br>
-                    <small>October 12, 2025</small>
-                </li>
-
-                <li>
-                    <strong>PWD Assistance Payout – Barangay Hall</strong><br>
-                    <small>October 22, 2025 (10:00 AM – 3:00 PM)</small>
-                </li>
-
-                <li>
-                    <strong>Tree Planting Activity – Near Coastal Highway</strong><br>
-                    <small>October 24, 2025 (6:00 AM – 10:00 AM)</small>
-                </li>
-
-                <li>
-                    <strong>Barangay Halloween Kids’ Party – Covered Court</strong><br>
-                    <small>October 31, 2025 (3:00 PM – 6:00 PM)</small>
-                </li>
-
-            </ul>
+            <article class="timeline" id="timeline-events" style="margin-top:30px">
+                    <p>Loading events...</p>
+            </article>
         </div>
 
     </div>
@@ -126,5 +60,34 @@
 
 <script src="assets/js/calendar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+let timelinePath;
+if (window.location.pathname.includes("/pages/resident/") || 
+    window.location.pathname.includes("/pages/admin/")) {
+    timelinePath = "../../backend/announcement_get_dashboard.php";
+} else {
+    timelinePath = "backend/announcement_get_dashboard.php";
+}
+
+fetch(timelinePath)
+    .then(res => res.json())
+    .then(data => {
+        let timelineHTML = "";
+
+        data.forEach(event => {
+            timelineHTML += `
+                <div class="timeline-event mb-3">
+                    <strong class="event-title">${event.title}</strong><br>
+                    <span class="event-location"><i class="bi bi-geo-alt-fill me-1"></i>${event.location}</span><br>
+                    <span class="event-datetime"><i class="bi bi-calendar-event me-1"></i>${event.time} | ${event.date}</span>
+                </div>
+            `;
+        });
+
+        document.getElementById("timeline-events").innerHTML =
+            timelineHTML || "<p>No upcoming announcements.</p>";
+    });
+
+</script>
 </body>
 </html>

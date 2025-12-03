@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         "email" => $email,
         "voter" => $_POST['voter'] ?? "No",
         "income" => $_POST['income'],
+        "civil_status" => $_POST['civil_status'],
         "family_head" => $_POST['family_head']
     ];
 

@@ -126,7 +126,7 @@ try {
                     </div>
                     <div class="calendar-header">
                         <button id="prev-month">&lt;</button>
-                        <h2 id="month-year"></h2>
+                        <h3 id="month-year"></h3>
                         <button id="next-month">&gt;</button>
                     </div>
 
@@ -135,7 +135,9 @@ try {
 
 
                 <article class="timeline" id="timeline-events">
-                    <p>Loading events...</p>
+                    <div class="timeline-message">
+                        <p>Loading events...</p>
+                    </div>
                 </article>
 
             </section>

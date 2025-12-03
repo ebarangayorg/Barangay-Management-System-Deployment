@@ -23,7 +23,7 @@
 </section>
 
   <section class="registration-form">
-    <h2>FILL OUT THE REGISTRATION FORM</h2>
+    <h2 style="font-weight: bold; color: #228B22;">FILL OUT THE REGISTRATION FORM</h2>
     <form action="backend/register_resident.php" method="POST">
       
       <div class="form-row">
@@ -40,12 +40,34 @@
           <option value="Female">Female</option>
         </select>
 
-        <input type="date" name="bdate" placeholder="Birth Date" required>
+        <input type="text" name="contact" placeholder="Contact Number" required>
+      </div>
+
+      <div class="form-row">
+        <label for="bdate" style="align-self: center; margin-left: 5px; font-size: 15px">Birth Date: </label>
+        <input type="date" id="bdate" name="bdate" required>
         <input type="text" name="bplace" placeholder="Birth Place" required>
       </div>
 
       <div class="form-row">
+        <select name="civil_status" required>
+          <option value="">Civil Status</option>
+          <option value="Single">Single</option>
+          <option value="Married">Married</option>
+          <option value="Separated">Separated</option>
+          <option value="Widowed">Widowed</option>
+        </select>
+
         <input type="text" name="occupation" placeholder="Occupation">
+        <select name="income" required>
+          <option value="">Family Income</option>
+          <option value="Below PHP 10,000">Below PHP 10,000</option>
+          <option value="PHP 10,000 - 20,000">PHP 10,000 - 20,000</option>
+          <option value="PHP 20,000+">PHP 20,000+</option>
+        </select>
+      </div>
+
+      <div class="form-row">
         <select name="voter" required>
           <option value="">Active Voter</option>
           <option value="Yes">Yes</option>
@@ -57,22 +79,11 @@
           <option value="Purok 2">Purok 2</option>
           <option value="Purok 3">Purok 3</option>
         </select>
-        <input type="text" name="resident_since" placeholder="Resident Since">
+        <label for="bdate" style="align-self: center; margin-left: 5px; font-size: 15px">Resident Since: </label>
+        <input type="number" id="YearInput" name="resident_since" placeholder="Resident Since" required min="1900" maxlength="2025">
       </div>
 
       <div class="form-row">
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="contact" placeholder="Contact Number" required>
-        <input type="password" name="password" placeholder="Password" required>
-      </div>
-
-      <div class="form-row">
-        <select name="income" required>
-          <option value="">Family Income</option>
-          <option value="Below PHP 10,000">Below PHP 10,000</option>
-          <option value="PHP 10,000 - 20,000">PHP 10,000 - 20,000</option>
-          <option value="PHP 20,000+">PHP 20,000+</option>
-        </select>
         <select name="family_head" required>
           <option value="">Family Head</option>
           <option value="Yes">Yes</option>
@@ -80,7 +91,13 @@
         </select>
       </div>
 
-      <p class="note">Please be informed that your registration to Barangay Gusa portal will be reviewed. We will notify you via email regarding your account status.</p>
+      <hr>
+      <div class="form-row">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <p class="note" style="color: red;">Please use your own email address and password. So that we can contact you immediately after reviewed your registration. <br> We will notify you via email regarding your account status.</p>
 
       <button type="submit">REGISTER NOW</button>
     </form>
@@ -108,6 +125,8 @@ function showToast(message, type = "error") {
         t.classList.remove("show");
     }, 3000);
 }
+
+document.getElementById("YearInput").value = new Date().getFullYear();
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

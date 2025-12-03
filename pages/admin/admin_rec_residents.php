@@ -109,12 +109,14 @@
                     data-occupation="<?= $r->occupation ?>"
                     data-voter="<?= $r->voter ?>"
                     data-purok="<?= $r->purok ?>"
-                    data-resident-since="<?= $r->resident_since ?>"
                     data-email="<?= $r->email ?>"
                     data-contact="<?= $r->contact ?>"
                     data-income="<?= $r->income ?>"
                     data-family-head="<?= $r->family_head ?>"
                     data-status="<?= $status ?>"
+                    data-civil-status="<?= $r->civil_status ?? '' ?>"
+                    data-resident-since="<?= $r->resident_since ?? '' ?>"
+
                 >
 
                     <td><?= $r->first_name . " " . $r->last_name ?></td>
@@ -163,6 +165,8 @@
                 <div class="row g-2">
                     <div class="col-md-6"><strong>Full Name:</strong> <span id="v-name"></span></div>
                     <div class="col-md-6"><strong>Gender:</strong> <span id="v-gender"></span></div>
+
+                    <div class="col-md-6"><strong>Civil Status:</strong> <span id="v-civil-status"></span></div>
 
                     <div class="col-md-6"><strong>Birth Date:</strong> <span id="v-bdate"></span></div>
                     <div class="col-md-6"><strong>Birth Place:</strong> <span id="v-bplace"></span></div>
@@ -229,6 +233,17 @@
                                 <option>Purok 3</option>
                             </select>
                         </div>
+
+                        <div class="col-md-6">
+                            Civil Status:
+                            <select class="form-control" name="civil_status" id="e-civil-status">
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Separated">Separated</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                        </div>
+
 
                         <div class="col-md-6">Occupation:<input class="form-control" name="occupation" id="e-occupation"></div>
                         <div class="col-md-6">Resident Since:<input class="form-control" name="resident_since" id="e-resident-since"></div>
@@ -337,6 +352,7 @@ document.querySelectorAll(".view-btn").forEach(btn => {
         document.getElementById("v-gender").innerText = r.dataset.gender;
         document.getElementById("v-bdate").innerText = r.dataset.bdate;
         document.getElementById("v-bplace").innerText = r.dataset.bplace;
+        document.getElementById("v-civil-status").innerText = r.dataset.civilStatus;
         document.getElementById("v-occupation").innerText = r.dataset.occupation;
         document.getElementById("v-voter").innerText = r.dataset.voter;
         document.getElementById("v-purok").innerText = r.dataset.purok;
@@ -368,6 +384,8 @@ document.querySelectorAll(".edit-btn").forEach(btn => {
 
         document.getElementById("e-gender").value = r.dataset.gender;
         document.getElementById("e-purok").value = r.dataset.purok;
+
+        document.getElementById("e-civil-status").value = r.dataset.civilStatus;
 
         document.getElementById("e-resident-since").value = r.dataset.residentSince;
         document.getElementById("e-occupation").value = r.dataset.occupation;

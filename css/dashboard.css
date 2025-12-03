@@ -193,14 +193,14 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 }
 
 .officials-table {
-    width: 80%;            
+    width: 90%;            
     margin: 0 auto;   
 }
 
 /* Reduce spacing inside cells */
 .officials-table th,
 .officials-table td {
-    padding: 6px 10px !important;
+    padding: 10px 10px !important;
     vertical-align: middle !important;
     text-align: center !important;
 }
@@ -234,7 +234,6 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
     height: 140px;
     object-fit: cover;
     border-radius: 10px;
-    border: 2px solid #ccc;
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
@@ -257,7 +256,7 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 .calendar-container {
   background: white;
   padding: 20px;
-  border-radius: 25px;
+  border-radius: 20px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);
   width: 100%;
   box-sizing: border-box;
@@ -299,6 +298,29 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
   background: #c1f2c7 !important;
   border: 2px solid #2E9F43;
 }
+
+.calendar-day.active {
+  background: #ffe8cc;
+  border: 1px solid #ff8800;
+  font-weight: bold;
+}
+
+.calendar-day:hover {
+  transform: scale(1.05);
+  background: #d6f5d6;
+}
+
+/* Highlight day number if there's an event */
+.calendar-day.event {
+    background-color: #2E9F43; /* green */
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 /* ---------- RIGHT COLUMN ---------- */
 
@@ -412,8 +434,8 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 .timeline {
   background: #f8f9f8;
   padding: 16px 20px;
-  font-size: 14px;
-  height: 330px;
+  font-size: 12px;
+  height: 250px;
   overflow-y: auto;
   box-shadow: inset 0 2px 8px rgb(0 0 0 / 0.1);
   line-height: 1.35;
@@ -427,6 +449,25 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 .timeline::-webkit-scrollbar { width: 6px; }
 .timeline::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 6px; }
 .timeline::-webkit-scrollbar-thumb { background: #2e9f43; border-radius: 6px; }
+
+.timeline .timeline-message p {
+  align-items: center;
+  justify-content: center;
+  color: #2e9f43;
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 0;
+  padding: 10px 0;
+}
+
+#timeline-events p {
+    text-align: center;
+    font-style: italic;
+    margin-top: 15px;
+    font-size: 16px;
+    color: #2e9f43;
+    font-weight: 800;
+}
 
 .action-buttons {
     display: flex;
