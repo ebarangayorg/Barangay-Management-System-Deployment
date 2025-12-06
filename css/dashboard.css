@@ -821,7 +821,4 @@ select {
     min-width: 0; 
 }
 
-/* Add or check these for status color styling */
-.status.pending { background: #f0ad4e; color: #fff; padding: 3px 6px; border-radius: 4px; }
-.status.readytopickup { background: #5cb85c; color: #fff; padding: 3px 6px; border-radius: 4px; }
 .status.settled { background: #5bc0de; color: #fff; padding: 3px 6px; border-radius: 4px; }
