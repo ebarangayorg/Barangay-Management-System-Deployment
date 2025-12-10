@@ -1,7 +1,6 @@
-# Use PHP 8.2 with Apache
 FROM php:8.2-apache
 
-# Install system dependencies and MongoDB extension
+# Install dependencies and MongoDB extension
 RUN apt-get update && apt-get install -y libssl-dev unzip git curl \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
@@ -13,24 +12,16 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy only composer files first (for caching)
+# Copy only composer files
 COPY composer.json composer.lock ./
 
-# Install PHP dependencies inside container
+# Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Copy the rest of the project
 COPY . .
 
-# Suppress Apache ServerName warning
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+ENV MONGO_URI=${MONGO_URI}
+ENV DB_NAME=${DB_NAME}
 
-# Copy startup script to handle dynamic Railway port
-COPY start-apache.sh /start-apache.sh
-RUN chmod +x /start-apache.sh
-
-# Expose port (Railway will override with $PORT)
 EXPOSE 80
-
-# Start Apache via the startup script
-CMD ["/start-apache.sh"]
