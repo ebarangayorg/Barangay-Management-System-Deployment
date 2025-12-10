@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once 'config.php';
 
 // Hide PHP warnings in production (optional)
@@ -14,7 +17,7 @@ $postedRole = trim($_POST['role'] ?? '');
 $isResidentForm = $postedRole === '';
 $loginPage = $isResidentForm ? '../resident_login.php' : '../admin_login.php';
 
-// Validate required fields
+// Validate input
 if (empty($email) || empty($password)) {
     $_SESSION['toast'] = "Email and password are required";
     $_SESSION['toast_type'] = "warn";
@@ -22,54 +25,41 @@ if (empty($email) || empty($password)) {
     exit();
 }
 
-// Validate email format
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $_SESSION['toast'] = "Invalid email format, please try again";
+    $_SESSION['toast'] = "Invalid email format";
     $_SESSION['toast_type'] = "error";
     header("Location: $loginPage");
     exit();
 }
 
-// Find user in database
+// Find user
 $user = $usersCollection->findOne(['email' => $email]);
-
 if (!$user) {
-    $_SESSION['toast'] = "User does not exist, please try again";
+    $_SESSION['toast'] = "User does not exist";
     $_SESSION['toast_type'] = "error";
     header("Location: $loginPage");
     exit();
 }
 
-// Get stored password safely
-$stored = isset($user['password']) ? (string)$user['password'] : '';
-if ($stored === '') {
-    $_SESSION['toast'] = "Account not yet registered, please try again";
-    $_SESSION['toast_type'] = "info";
-    header("Location: $loginPage");
-    exit();
-}
-
-// Verify password
-if (!password_verify($password, $stored)) {
-    $_SESSION['toast'] = "Incorrect password, please try again";
+$stored = (string)($user['password'] ?? '');
+if ($stored === '' || !password_verify($password, $stored)) {
+    $_SESSION['toast'] = "Incorrect password";
     $_SESSION['toast_type'] = "error";
     header("Location: $loginPage");
     exit();
 }
 
-// Determine user role
+// Role check
 $userRole = $user['role'] ?? 'Resident';
-
-// Prevent wrong form usage
 if ($isResidentForm && $userRole === 'Barangay Staff') {
-    $_SESSION['toast'] = "Invalid role, please use the correct login form";
+    $_SESSION['toast'] = "Invalid role";
     $_SESSION['toast_type'] = "error";
     header("Location: $loginPage");
     exit();
 }
 
 if (!$isResidentForm && $postedRole !== $userRole) {
-    $_SESSION['toast'] = "Invalid role, please use the correct login form";
+    $_SESSION['toast'] = "Invalid role";
     $_SESSION['toast_type'] = "error";
     header("Location: $loginPage");
     exit();
@@ -83,32 +73,22 @@ $_SESSION['user_id'] = isset($user['_id']) ? (string)$user['_id'] : '';
 $_SESSION['username'] = $user['email'] ?? '';
 $_SESSION['status'] = $user['status'] ?? null;
 
-// Resident account status checks
+// Resident status
 if ($userRole === 'Resident') {
     $status = $user['status'] ?? null;
-
-    if ($status === 'Pending') {
+    if ($status === 'Pending' || $status === 'Rejected') {
         unset($_SESSION['email'], $_SESSION['role'], $_SESSION['user_id'], $_SESSION['username'], $_SESSION['status']);
-        $_SESSION['toast'] = "Account is not approved yet, please wait for approval";
-        $_SESSION['toast_type'] = "warn";
-        header("Location: $loginPage");
-        exit();
-    }
-
-    if ($status === 'Rejected') {
-        unset($_SESSION['email'], $_SESSION['role'], $_SESSION['user_id'], $_SESSION['username'], $_SESSION['status']);
-        $_SESSION['toast'] = "Account is rejected, please contact admin";
-        $_SESSION['toast_type'] = "error";
+        $_SESSION['toast'] = $status === 'Pending'
+            ? "Account not approved yet"
+            : "Account rejected, contact admin";
+        $_SESSION['toast_type'] = $status === 'Pending' ? "warn" : "error";
         header("Location: $loginPage");
         exit();
     }
 }
 
-// Redirect to dashboards
-if ($userRole === 'Barangay Staff') {
-    header("Location: ../pages/admin/admin_dashboard.php");
-} else {
-    header("Location: ../pages/resident/resident_dashboard.php");
-}
+// Redirect
+header("Location: " . ($userRole === 'Barangay Staff'
+    ? '../pages/admin/admin_dashboard.php'
+    : '../pages/resident/resident_dashboard.php'));
 exit();
-?>
