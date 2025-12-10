@@ -1,5 +1,5 @@
 <?php
-require_once "cloudinary_config.php"; // Include Cloudinary setup
+require_once "../cloudinary_config.php"; // Include Cloudinary setup
 require_once "config.php";             // MongoDB connection
 
 $title = $_POST["title"];
