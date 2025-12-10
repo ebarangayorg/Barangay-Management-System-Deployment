@@ -22,6 +22,12 @@ RUN composer install --no-dev --optimize-autoloader
 # Copy the rest of the project
 COPY . .
 
+# Ensure uploads folders exist and are writable
+RUN mkdir -p /var/www/html/uploads/announcements \
+    && mkdir -p /var/www/html/uploads/residents \
+    && mkdir -p /var/www/html/uploads/officials \
+    && chmod -R 777 /var/www/html/uploads
+
 # Suppress Apache ServerName warning
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 

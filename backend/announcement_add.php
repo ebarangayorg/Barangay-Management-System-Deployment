@@ -11,7 +11,7 @@ $filename = "";
 
 if (!empty($_FILES["photo"]["name"])) {
     $filename = time() . "_" . basename($_FILES["photo"]["name"]);
-    $target = "../uploads/announcements/" . $filename;
+    $target = UPLOADS_DIR . "/announcements/" . $filename;
     move_uploaded_file($_FILES["photo"]["tmp_name"], $target);
 }
 
@@ -27,4 +27,3 @@ $announcementCollection->insertOne([
 
 header("Location: ../pages/admin/admin_announcement.php");
 exit;
-?>

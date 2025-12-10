@@ -1,6 +1,8 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
+define('UPLOADS_DIR', __DIR__ . '/../uploads');
+
 use Dotenv\Dotenv;
 
 // Load .env locally ONLY
