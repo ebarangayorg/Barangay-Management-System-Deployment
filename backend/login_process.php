@@ -1,12 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 require_once __DIR__ . '/config.php';
 
-
-// Hide PHP warnings in production (optional)
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(E_ALL);
 
 // Get POST data safely
 $email = trim($_POST['email'] ?? '');
