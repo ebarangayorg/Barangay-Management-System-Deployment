@@ -1,26 +1,28 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
+
 use Dotenv\Dotenv;
 
-// Load .env locally if it exists
+// Load .env ONLY for local development
 $dotenvPath = __DIR__ . "/../";
 if (file_exists($dotenvPath . ".env")) {
     $dotenv = Dotenv::createImmutable($dotenvPath);
     $dotenv->load();
 }
 
+// Railway uses getenv()
+$mongoUri = $_ENV['MONGO_URI'] ?? getenv('MONGO_URI');
+$dbName   = $_ENV['DB_NAME'] ?? getenv('DB_NAME');
+
+if (!$mongoUri || !$dbName) {
+    die("Error: Missing MONGO_URI or DB_NAME. Values: "
+        . "MONGO_URI=" . var_export($mongoUri, true)
+        . " DB_NAME=" . var_export($dbName, true)
+    );
+}
+
 try {
-    $mongoUri = $_ENV['MONGO_URI'] ?? null;
-    $dbName   = $_ENV['DB_NAME'] ?? null;
-
-    if (!$mongoUri || !$dbName) {
-        throw new Exception("MongoDB connection info not set in environment variables.");
-    }
-
-    // Connect to MongoDB
     $client = new MongoDB\Client($mongoUri);
-
-    // Select database
     $database = $client->selectDatabase($dbName);
 
     // Collections
