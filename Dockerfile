@@ -22,9 +22,12 @@ RUN composer install --no-dev --optimize-autoloader
 # Copy the rest of the project
 COPY . .
 
-# Set default Apache port to 80 if $PORT is not defined (for local testing)
+# Set default port to 80 if $PORT is not defined
 ARG RAILWAY_PORT=80
 ENV APACHE_LISTEN_PORT=${PORT:-$RAILWAY_PORT}
+
+# Set Apache ServerName to localhost (to suppress the warning)
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Update Apache to listen on the correct port
 RUN sed -i "s/80/${APACHE_LISTEN_PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
