@@ -1,14 +1,14 @@
 <?php
-// Always first: session handling (optional if you start sessions in pages)
+// Start session at the very top
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Autoload dependencies
+// Autoload Composer dependencies
 require __DIR__ . '/../vendor/autoload.php';
 use Dotenv\Dotenv;
 
-// Load .env locally (won’t be used on Railway)
+// Load local .env (for local development)
 $dotenvPath = __DIR__ . "/../";
 if (file_exists($dotenvPath . ".env")) {
     $dotenv = Dotenv::createImmutable($dotenvPath);
@@ -16,7 +16,7 @@ if (file_exists($dotenvPath . ".env")) {
 }
 
 try {
-    // Get MongoDB info from Railway env first, then .env
+    // MongoDB connection: Railway env vars first, then .env
     $mongoUri = getenv('MONGO_URI') ?: ($_ENV['MONGO_URI'] ?? null);
     $dbName   = getenv('DB_NAME') ?: ($_ENV['DB_NAME'] ?? null);
 
@@ -38,6 +38,6 @@ try {
     $issuanceCollection     = $database->issuances;
 
 } catch (Exception $e) {
-    // Stop execution and log error
+    // Stop execution if MongoDB connection fails
     die("Error connecting to MongoDB: " . $e->getMessage());
 }
