@@ -248,7 +248,7 @@
         <form action="../../backend/announcement_update.php" method="POST">
             <input type="hidden" name="id" id="a_id">
             <input type="hidden" name="status" value="archived">
-            <button class="btn btn-warning" type="submit">Archive</button>
+            <button type="submit" class="btn btn-secondary">Archive</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </form>
     </div>

@@ -143,7 +143,7 @@ $incidents = $incidentsCollection->find($filter);
                            <i class="bi bi-printer"></i>
                         </a>
 
-                        <-- VIEW -->
+                        <!-- VIEW -->
                         <button class="btn btn-sm btn-info me-1 text-white"
                             onclick='openViewModal(<?= json_encode($incident) ?>)'>
                             <i class="bi bi-eye"></i>
@@ -328,7 +328,7 @@ $incidents = $incidentsCollection->find($filter);
       <form action="../../backend/blotter_update.php" method="POST">
         <input type="hidden" name="blotter_id" id="archive_id">
         <input type="hidden" name="status" value="archived">
-        <button type="submit" class="btn btn-warning">Yes, Archive</button>
+        <button type="submit" class="btn btn-secondary">Archive</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </form>
     </div>

@@ -151,7 +151,7 @@ $filter = ["status" => ['$ne' => "archived"]];
       <form action="../../backend/complaint_process.php" method="POST">
         <input type="hidden" name="complaint_id" id="archive_id">
         <input type="hidden" name="status" value="archived">
-        <button type="submit" class="btn btn-warning">Yes, Archive</button>
+        <button type="submit" class="btn btn-secondary">Archive</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </form>
     </div>
