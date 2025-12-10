@@ -6,25 +6,33 @@ header("Content-Type: application/json");
 
 // Validate ID
 if (!isset($_POST["issuance_id"]) || empty($_POST["issuance_id"])) {
-    echo json_encode(["status" => "error", "message" => "Missing request ID."]);
+    echo json_encode(["status" => "error", "message" => "Missing issuance ID."]);
     exit();
 }
 
 $id = $_POST["issuance_id"];
 $status = $_POST["status"] ?? "Pending";
 
-// Convert to CamelCase
+// Normalize status (Approved → Approved, approved → Approved)
 $status = ucwords(strtolower($status));
 
-// Prepare fields to update
 $updateFields = ['status' => $status];
 
-// Optional editable fields
-if (isset($_POST['certificate_for'])) $updateFields['certificate_for'] = trim($_POST['certificate_for']);
-if (isset($_POST['purpose'])) $updateFields['purpose'] = trim($_POST['purpose']);
-if (isset($_POST['business_name'])) $updateFields['business_name'] = trim($_POST['business_name']);
-if (isset($_POST['business_location'])) $updateFields['business_location'] = trim($_POST['business_location']);
-if (isset($_POST['reason'])) $updateFields['reason'] = trim($_POST['reason']);
+// Update only fields that exist for THIS document type
+$possibleFields = [
+    'certificate_for',
+    'certificate_for_fullname',
+    'purpose',
+    'business_name',
+    'business_location',
+    'reason'
+];
+
+foreach ($possibleFields as $field) {
+    if (isset($_POST[$field])) {
+        $updateFields[$field] = trim($_POST[$field]);
+    }
+}
 
 try {
     $issuanceCollection->updateOne(
@@ -32,14 +40,11 @@ try {
         ['$set' => $updateFields]
     );
 
-    // AJAX response
-    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) || isset($_POST['ajax'])) {
-        echo json_encode(["status" => "success", "newStatus" => $status]);
-        exit();
-    }
-
-    // Non-AJAX redirect
-    header("Location: ../pages/admin/admin_issuance.php");
+    // ALWAYS return JSON for AJAX
+    echo json_encode([
+        "status" => "success",
+        "updated" => $updateFields
+    ]);
     exit();
 
 } catch (Exception $e) {
