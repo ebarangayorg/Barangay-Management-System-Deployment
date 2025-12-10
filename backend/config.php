@@ -3,14 +3,14 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-// Load .env ONLY for local development
+// Load .env locally if exists
 $dotenvPath = __DIR__ . "/../";
 if (file_exists($dotenvPath . ".env")) {
     $dotenv = Dotenv::createImmutable($dotenvPath);
     $dotenv->load();
 }
 
-// Get MongoDB credentials (try all sources)
+// Get MongoDB credentials
 $mongoUri = $_ENV['MONGO_URI'] ?? $_SERVER['MONGO_URI'] ?? getenv('MONGO_URI');
 $dbName   = $_ENV['DB_NAME']  ?? $_SERVER['DB_NAME']  ?? getenv('DB_NAME');
 

@@ -11,7 +11,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /var/www/html
 
-# Copy composer files first (for caching)
+# Copy composer files first
 COPY composer.json composer.lock ./
 
 # Install PHP dependencies inside container
@@ -27,7 +27,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 COPY start-apache.sh /start-apache.sh
 RUN chmod +x /start-apache.sh
 
-# Expose port (Railway will override $PORT)
+# Expose default port
 EXPOSE 80
 
 # Start Apache using startup script

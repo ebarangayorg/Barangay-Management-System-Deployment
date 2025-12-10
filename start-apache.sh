@@ -1,9 +1,9 @@
 #!/bin/bash
-# Pass Railway environment variables to Apache workers
+# Export environment variables for Apache workers
 export MONGO_URI=$MONGO_URI
 export DB_NAME=$DB_NAME
 
-# Optional: debug environment variables
+# Debug (optional)
 # echo "MONGO_URI=$MONGO_URI"
 # echo "DB_NAME=$DB_NAME"
 
