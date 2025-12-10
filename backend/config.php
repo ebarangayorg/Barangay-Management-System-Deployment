@@ -2,7 +2,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 use Dotenv\Dotenv;
 
-// Load .env locally (only if exists)
+// Load .env locally if it exists
 $dotenvPath = __DIR__ . "/../";
 if (file_exists($dotenvPath . ".env")) {
     $dotenv = Dotenv::createImmutable($dotenvPath);
@@ -10,15 +10,17 @@ if (file_exists($dotenvPath . ".env")) {
 }
 
 try {
-    // First try Railway / system env, then .env
-    $mongoUri = getenv('MONGO_URI') ?: ($_ENV['MONGO_URI'] ?? null);
-    $dbName   = getenv('DB_NAME') ?: ($_ENV['DB_NAME'] ?? null);
+    $mongoUri = $_ENV['MONGO_URI'] ?? null;
+    $dbName   = $_ENV['DB_NAME'] ?? null;
 
     if (!$mongoUri || !$dbName) {
         throw new Exception("MongoDB connection info not set in environment variables.");
     }
 
+    // Connect to MongoDB
     $client = new MongoDB\Client($mongoUri);
+
+    // Select database
     $database = $client->selectDatabase($dbName);
 
     // Collections
