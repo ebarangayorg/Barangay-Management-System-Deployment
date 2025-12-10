@@ -1,9 +1,8 @@
 # Use PHP 8.2 with Apache
 FROM php:8.2-apache
 
-# Install system dependencies, MongoDB extension, and enable rewrite
-RUN apt-get update && apt-get install -y \
-    libssl-dev unzip git curl \
+# Install system dependencies and MongoDB extension
+RUN apt-get update && apt-get install -y libssl-dev unzip git curl \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
     && a2enmod rewrite
@@ -26,12 +25,12 @@ COPY . .
 # Suppress Apache ServerName warning
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Copy startup script to handle dynamic port (optional, for Railway or local)
+# Copy startup script
 COPY start-apache.sh /start-apache.sh
 RUN chmod +x /start-apache.sh
 
-# Expose Apache port
+# Expose port (Railway overrides with $PORT)
 EXPOSE 80
 
-# Start Apache using the startup script
+# Start Apache
 CMD ["/start-apache.sh"]
