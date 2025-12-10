@@ -263,7 +263,7 @@ $requests = iterator_to_array(
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-const BASE_PATH = "/Barangay-Management-System/backend/";
+const BASE_PATH = "../../backend/";
 
 // View request function
 function viewRequest(id){
