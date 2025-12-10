@@ -1,8 +1,8 @@
 <?php
 ob_start();
 session_start();
-require_once __DIR__ . "/../../backend/config.php";
-require_once __DIR__ . "/../../backend/fpdf186/fpdf.php";
+require_once "../../backend/config.php";
+require_once "../../backend/fpdf186/fpdf.php";
 
 class GenericPDF extends FPDF {
     function Header(){

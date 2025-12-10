@@ -1,8 +1,8 @@
 <?php
 ob_start();
 session_start();
-require_once __DIR__ . "../../../backend/config.php";
-require_once __DIR__ . "../../../backend/fpdf186/fpdf.php";
+require_once "../../../backend/config.php";
+require_once "../../../backend/fpdf186/fpdf.php";
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Barangay Staff') {
     $_SESSION['toast'] = [
@@ -27,7 +27,7 @@ function formatDateText($date) {
 class PDF extends FPDF {
     public $widths;
     public $aligns;
-
+    
     function Header() {
         $this->Image('../../../assets/img/cdologo.png', 10, 10, 25);
         $this->Image('../../../assets/img/barangaygusalogo.png', 175, 10, 25);

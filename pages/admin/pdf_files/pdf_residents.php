@@ -1,8 +1,8 @@
 <?php
 ob_start();
 session_start();
-require_once __DIR__ . "../../../backend/config.php";
-require_once __DIR__ . "../../../backend/fpdf186/fpdf.php";
+require_once  "../../../backend/config.php";
+require_once "../../../backend/fpdf186/fpdf.php";
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Barangay Staff') {
     $_SESSION['toast'] = [
