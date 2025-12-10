@@ -272,7 +272,7 @@ function openViewModal(data) {
     document.getElementById('v_location').textContent = data.location;
     document.getElementById('v_date').textContent = data.date;
     document.getElementById('v_time').textContent = data.time;
-    document.getElementById('v_image').src = data.image ? `../../uploads/announcements/${data.image}` : '';
+    document.getElementById('v_image').src = data.image || '';
     new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 
@@ -328,7 +328,7 @@ fetch("../../backend/announcement_get.php")
     data.forEach(item => {
         table += `
         <tr>
-            <td><img src="../../uploads/announcements/${item.image}"style="width:300px;height:120px;object-fit:cover;border-radius:5px"></td>
+            <td><img src="${item.image || ''}" style="width:300px;height:120px;object-fit:cover;border-radius:5px"></td>
             <td>${item.title}</td>
             <td>${truncateText(item.details, 25)}</td>
             <td>${item.location}</td>

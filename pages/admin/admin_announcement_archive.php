@@ -92,7 +92,7 @@ $announcements = iterator_to_array($announcementCollection->find($filter));
                     <tr>
                         <td>
                             <?php if (!empty($item->image)): ?>
-                                <img src="../../uploads/announcements/<?= htmlspecialchars($item->image) ?>" style="width:150px;height:auto;border-radius:5px;">
+                                <img src="<?= htmlspecialchars($item->image) ?>" style="width:150px;height:auto;border-radius:5px;">
                             <?php endif; ?>
                         </td>
                         <td><?= htmlspecialchars($item->title) ?></td>
@@ -236,7 +236,7 @@ function openViewModal(data) {
     document.getElementById('v_location').textContent = data.location;
     document.getElementById('v_date').textContent = data.date;
     document.getElementById('v_time').textContent = data.time;
-    document.getElementById('v_image').src = data.image ? `../../uploads/announcements/${data.image}` : '';
+    document.getElementById('v_image').src = data.image || '';
     new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 
