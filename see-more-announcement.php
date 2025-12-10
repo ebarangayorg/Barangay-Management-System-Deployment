@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "backend/config.php";
 
 // Check if ID is provided
