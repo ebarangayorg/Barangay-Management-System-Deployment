@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
+
 
 // Hide PHP warnings in production (optional)
 ini_set('display_errors', 0);
