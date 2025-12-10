@@ -1,17 +1,22 @@
 FROM php:8.2-apache
 
-# Install PHP extensions
-RUN apt-get update && apt-get install -y \
-    libssl-dev \
+# Install system dependencies and MongoDB PHP extension
+RUN apt-get update && apt-get install -y libssl-dev unzip git \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb
 
-# Enable Apache mod_rewrite (optional but recommended)
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Copy project files
-COPY . /var/www/html/
+# Set working directory
+WORKDIR /var/www/html
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer install
+# Copy composer files and install dependencies
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy rest of project files
+COPY . .
+
+# Optional: expose port 80
+EXPOSE 80
