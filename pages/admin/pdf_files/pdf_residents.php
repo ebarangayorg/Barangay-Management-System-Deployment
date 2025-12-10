@@ -1,8 +1,8 @@
 <?php
 ob_start();
 session_start();
-require_once "../../../backend/config.php";
-require_once "../../../backend/fpdf186/fpdf.php";
+require_once __DIR__ . "../../../backend/config.php";
+require_once __DIR__ . "../../../backend/fpdf186/fpdf.php";
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Barangay Staff') {
     $_SESSION['toast'] = [
@@ -38,7 +38,7 @@ class PDF extends FPDF {
         $this->SetFillColor(200,200,200);
 
         // widths for 9 columns
-        $this->widths = [35,15,20,20,25,18,18,20,15,30]; 
+        $this->widths = [35,15,20,20,25,18,19,20,15,30]; 
         $this->adjustWidths();
         $this->adjustWidths();
 
