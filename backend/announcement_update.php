@@ -2,18 +2,15 @@
 require_once "config.php";
 
 $id = $_POST["id"];
-
-// Build update array safely
 $updateData = array_filter([
     "title"    => $_POST["title"] ?? null,
     "details"  => $_POST["details"] ?? null,
     "location" => $_POST["location"] ?? null,
     "date"     => $_POST["date"] ?? null,
     "time"     => $_POST["time"] ?? null,
-    "status"   => $_POST["status"] ?? null  
+    "status"   => $_POST["status"] ?? null
 ]);
 
-// Handle new image upload
 if (!empty($_FILES["photo"]["name"])) {
     $filename = time() . "_" . basename($_FILES["photo"]["name"]);
     $target = UPLOADS_DIR . "/announcements/" . $filename;
@@ -26,11 +23,5 @@ $announcementCollection->updateOne(
     ['$set' => $updateData]
 );
 
-// Redirect depending on status if provided
-$status = $_POST["status"] ?? null;
-if ($status === "archived") {
-    header("Location: ../pages/admin/admin_announcement_archive.php");
-} else {
-    header("Location: ../pages/admin/admin_announcement.php");
-}
+header("Location: " . ($_POST["status"] === "archived" ? "../pages/admin/admin_announcement_archive.php" : "../pages/admin/admin_announcement.php"));
 exit;
