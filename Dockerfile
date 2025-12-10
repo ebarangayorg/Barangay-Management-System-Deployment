@@ -22,9 +22,12 @@ RUN composer install --no-dev --optimize-autoloader
 # Copy the rest of the project
 COPY . .
 
-# Configure Apache to listen on Railway's dynamic port
-ENV APACHE_LISTEN_PORT=$PORT
-RUN sed -i "s/80/${PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
+# Set default port to 80 if $PORT is not defined
+ARG RAILWAY_PORT=80
+ENV APACHE_LISTEN_PORT=${PORT:-$RAILWAY_PORT}
+
+# Update Apache config
+RUN sed -i "s/80/${APACHE_LISTEN_PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
 
 # Expose port (Railway will override with $PORT)
 EXPOSE $PORT
