@@ -575,7 +575,7 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
         .settled { background: #e0a800; }
         .rejected { background: #d9534f; }
         .settled { background: #e0a800; }
-        .active { background: #5cb85c;}
+        .status.active { background: #5cb85c;}
         
 .hamburger {
     display: none;
