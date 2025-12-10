@@ -1,9 +1,8 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-
 use Dotenv\Dotenv;
 
-// Load .env from project root (only used locally)
+// Load .env locally
 $dotenvPath = __DIR__ . "/../";
 if (file_exists($dotenvPath . ".env")) {
     $dotenv = Dotenv::createImmutable($dotenvPath);
@@ -11,8 +10,9 @@ if (file_exists($dotenvPath . ".env")) {
 }
 
 try {
-    $mongoUri = $_ENV['MONGO_URI'] ?? null;
-    $dbName   = $_ENV['DB_NAME'] ?? null;
+    // Try environment variables from Railway first, then .env
+    $mongoUri = $_ENV['MONGO_URI'] ?? getenv('MONGO_URI') ?? null;
+    $dbName   = $_ENV['DB_NAME'] ?? getenv('DB_NAME') ?? null;
 
     if (!$mongoUri || !$dbName) {
         throw new Exception("MongoDB connection info not set in environment variables.");
@@ -25,13 +25,13 @@ try {
     $database = $client->selectDatabase($dbName);
 
     // Collections
-    $usersCollection       = $database->users;
-    $residentsCollection   = $database->residents;
-    $officialsCollection   = $database->officials;
-    $contactsCollection    = $database->contacts;
-    $incidentsCollection   = $database->incidents;
-    $announcementCollection= $database->announcements;
-    $issuanceCollection    = $database->issuances;
+    $usersCollection        = $database->users;
+    $residentsCollection    = $database->residents;
+    $officialsCollection    = $database->officials;
+    $contactsCollection     = $database->contacts;
+    $incidentsCollection    = $database->incidents;
+    $announcementCollection = $database->announcements;
+    $issuanceCollection     = $database->issuances;
 
 } catch (Exception $e) {
     die("Error connecting to MongoDB: " . $e->getMessage());
