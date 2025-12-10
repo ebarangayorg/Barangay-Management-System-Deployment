@@ -91,6 +91,9 @@ $incidents = $incidentsCollection->find($filter);
                 </tr>
             </thead>
             <tbody>
+                <?php if(empty($incidents)): ?>
+                    <tr><td colspan="6" class="text-center">No archived incidents found.</td></tr>
+                <?php else: ?>
                 <?php foreach ($incidents as $item): ?>
                     <tr>
                         <td><?= $item->case_no ?></td>
@@ -121,11 +124,9 @@ $incidents = $incidentsCollection->find($filter);
                     </tr>
                     </tbody>
                 <?php endforeach; ?>
-
+            <?php endif; ?>
         </table>
-
     </div>
-
 </div>
 
 <!-- ======================== VIEW MODAL ======================== -->

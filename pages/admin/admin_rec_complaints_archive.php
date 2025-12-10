@@ -79,6 +79,9 @@ $filter = ["status" => "archived"];
                 </tr>
             </thead>
             <tbody>
+                <?php if(empty($complaints)): ?>
+                    <tr><td colspan="6" class="text-center">No archived complaints found.</td></tr>
+                <?php else: ?>
                 <?php foreach ($complaints as $c): 
                     $id = (string)$c['_id'];
                     $shortMessage = strlen($c['message']) > 30 ? substr($c['message'], 0, 30) . "..." : $c['message'];
@@ -112,6 +115,7 @@ $filter = ["status" => "archived"];
                 </tr>
             </tbody>
             <?php endforeach; ?>
+        <?php endif; ?>
         </table>
     </div>
 </div>

@@ -83,6 +83,9 @@ $officials = $officialsCollection->find($filter);
                 </tr>
             </thead>
             <tbody>
+            <?php if(empty($officials)): ?>
+                <tr><td colspan="4" class="text-center">No archived officials found.</td></tr>
+            <?php else: ?>
             <?php foreach ($officials as $item): ?>
                 <tr>
                     <td>
@@ -114,6 +117,7 @@ $officials = $officialsCollection->find($filter);
                 </tr>
             </tbody>
             <?php endforeach; ?>
+        <?php endif; ?>
         </table>
     </div>
 </div>
