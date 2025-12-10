@@ -22,15 +22,15 @@ RUN composer install --no-dev --optimize-autoloader
 # Copy the rest of the project
 COPY . .
 
-# Set default port to 80 if $PORT is not defined
+# Set default Apache port to 80 if $PORT is not defined (for local testing)
 ARG RAILWAY_PORT=80
 ENV APACHE_LISTEN_PORT=${PORT:-$RAILWAY_PORT}
 
-# Update Apache config
+# Update Apache to listen on the correct port
 RUN sed -i "s/80/${APACHE_LISTEN_PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
 
-# Expose port (Railway will override with $PORT)
-EXPOSE $PORT
+# Expose the port
+EXPOSE ${APACHE_LISTEN_PORT}
 
 # Start Apache in the foreground
 CMD ["apache2-foreground"]
