@@ -28,6 +28,6 @@
   </div>
 
   <p class="footer-bottom">
-    © 2025 Barangay Gusa Cagayan de Oro City. All Rights Reserved.
+    © 2025 This website is educational purposes only. All rights reserved by Barangay Gusa
   </p>
 </footer>
