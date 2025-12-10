@@ -328,7 +328,7 @@ fetch("../../backend/announcement_get.php")
     data.forEach(item => {
         table += `
         <tr>
-            <td><img src="${item.image || ''}" style="width:300px;height:120px;object-fit:cover;border-radius:5px"></td>
+            <td><img src="../../uploads/announcements/${item.image}"style="width:300px;height:120px;object-fit:cover;border-radius:5px"></td>
             <td>${item.title}</td>
             <td>${truncateText(item.details, 25)}</td>
             <td>${item.location}</td>
