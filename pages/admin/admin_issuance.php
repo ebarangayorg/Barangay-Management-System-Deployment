@@ -155,6 +155,7 @@ $requests = iterator_to_array(
                                     <?= strtolower($r->status) === 'ready for pickup' ? 'ready' : '' ?>
                                     <?= strtolower($r->status) === 'rejected' ? 'decline' : '' ?>
                                     <?= strtolower($r->status) === 'received' ? 'received' : '' ?>
+                                    <?= strtolower($r->status) === 'active' ? 'active' : '' ?>
                                 ">
                                     <?= ucwords($r->status) ?>
                                 </span>
