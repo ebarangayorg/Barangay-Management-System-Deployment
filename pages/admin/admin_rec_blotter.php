@@ -136,12 +136,18 @@ $incidents = $incidentsCollection->find($filter);
                     <td><?= $incident->subject ?></td>
                     <td><span class="status <?= strtolower($incident->status) ?>"><?= ucfirst($incident->status) ?></span></td>
                     <td>
-                        <!-- VIEW -->
+                        <!-- PRINT -->
                         <a href="pdf_files/pdf_blotter.php?id=<?= $incident->_id ?>" 
                            target="_blank"
-                           class="btn btn-sm btn-info text-white me-1">
-                           <i class="bi bi-eye"></i>
+                           class="btn btn-sm btn-warning me-1">
+                           <i class="bi bi-printer"></i>
                         </a>
+
+                        <-- VIEW -->
+                        <button class="btn btn-sm btn-info me-1 text-white"
+                            onclick='openViewModal(<?= json_encode($incident) ?>)'>
+                            <i class="bi bi-eye"></i>
+                        </button>
 
                         <!-- EDIT -->
                         <button class="btn btn-sm btn-primary me-1 edit-btn" data-incident='<?= $data ?>'>
@@ -220,6 +226,26 @@ $incidents = $incidentsCollection->find($filter);
           <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="modal fade" id="viewModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content p-3">
+      <h4>Blotter Record</h4>
+
+      <p><b>Case No:</b> <span id="v_case"></span></p>
+      <p><b>Respondent:</b> <span id="v_res"></span></p>
+      <p><b>Complainant:</b> <span id="v_comp"></span></p>
+      <p><b>Date Filed:</b> <span id="v_date"></span></p>
+      <p><b>Date Happened:</b> <span id="v_happened"></span></p>
+      <p><b>Subject:</b> <span id="v_subject"></span></p>
+      <p><b>Description:</b></p>
+      <p id="v_desc" class="border p-2"></p>
+
+      <button class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button>
     </div>
   </div>
 </div>
@@ -322,6 +348,19 @@ function normalizeDate(val) {
     if (typeof val === "object" && val.$date) return val.$date.split("T")[0];
     if (typeof val === "string" && val.includes("T")) return val.split("T")[0];
     return val;
+}
+
+// VIEW MODAL
+function openViewModal(data) {
+    document.getElementById('v_case').textContent = data.case_no;
+    document.getElementById('v_res').textContent = data.respondent;
+    document.getElementById('v_comp').textContent = data.complainant;
+    document.getElementById('v_date').textContent = normalizeDate(data.date_filed);
+    document.getElementById('v_happened').textContent = normalizeDate(data.date_happened);
+    document.getElementById('v_subject').textContent = data.subject;
+    document.getElementById('v_desc').textContent = data.description;
+
+    new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 
 // EDIT MODAL
