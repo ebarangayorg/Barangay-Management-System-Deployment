@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 require_once "../../../backend/config.php";
 require_once "../../../backend/fpdf186/fpdf.php";
@@ -24,6 +25,9 @@ function formatDateText($date) {
 }
 
 class PDF extends FPDF {
+    public $widths;
+    public $aligns;
+    
     function Header() {
         $this->Image('../../../assets/img/cdologo.png', 10, 10, 25);
         $this->Image('../../../assets/img/barangaygusalogo.png', 175, 10, 25);
@@ -86,3 +90,4 @@ foreach($lines as $line) {
 
 // Output PDF
 $pdf->Output('I','Blotter_'.$incident->case_no.'.pdf');
+ob_end_flush();

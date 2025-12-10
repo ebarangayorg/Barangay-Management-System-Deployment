@@ -2,10 +2,12 @@
 require_once "config.php";
 
 $id = $_POST["id"];
+$status = $_POST["status"] ?? null; // Safe access
+
 $updateData = array_filter([
     "name"     => $_POST["name"] ?? null,
     "position" => $_POST["position"] ?? null,
-    "status"   => $_POST["status"] ?? null
+    "status"   => $status
 ]);
 
 if (!empty($_FILES["photo"]["name"])) {
@@ -20,5 +22,10 @@ $officialsCollection->updateOne(
     ['$set' => $updateData]
 );
 
-header("Location: " . ($_POST["status"] === "archived" ? "../pages/admin/admin_officials_archive.php" : "../pages/admin/admin_officials.php"));
+// Redirect safely
+if ($status === "archived") {
+    header("Location: ../pages/admin/admin_officials_archive.php");
+} else {
+    header("Location: ../pages/admin/admin_officials.php");
+}
 exit;
