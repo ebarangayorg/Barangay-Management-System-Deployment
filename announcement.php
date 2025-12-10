@@ -49,9 +49,8 @@ $announcements = $announcementCollection->find(
                 <div class="card announcement-page-card p-3 h-100 w-100 d-flex flex-column">
 
                     <!-- Image -->
-                    <!-- Image -->
                     <?php if (!empty($item->image)): ?>
-                        <img src="<?= htmlspecialchars($item->image) ?>" class="mb-3 w-100 announcement-page-img" />
+                        <img src="uploads/announcements/<?= $item->image ?>" class="mb-3 w-100 announcement-page-img" />
                     <?php else: ?>
                         <img src="assets/img/announcement_placeholder.png" class="mb-3 w-100 announcement-page-img" />
                     <?php endif; ?>

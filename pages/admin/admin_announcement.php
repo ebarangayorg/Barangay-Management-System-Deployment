@@ -272,7 +272,7 @@ function openViewModal(data) {
     document.getElementById('v_location').textContent = data.location;
     document.getElementById('v_date').textContent = data.date;
     document.getElementById('v_time').textContent = data.time;
-    document.getElementById('v_image').src = data.image || '';
+    document.getElementById('v_image').src = data.image ? `../../uploads/announcements/${data.image}` : '';
     new bootstrap.Modal(document.getElementById('viewModal')).show();
 }
 

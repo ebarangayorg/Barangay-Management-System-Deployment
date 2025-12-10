@@ -1,41 +1,48 @@
 <?php
-require_once "../cloudinary_config.php"; // Cloudinary setup
-require_once "config.php";             // MongoDB connection
+require_once "config.php";
+require_once "auth_admin.php";
 
-$id = $_POST["id"];
+header("Content-Type: application/json");
 
-// Build update array safely
-$updateData = array_filter([
-    "title"    => $_POST["title"] ?? null,
-    "details"  => $_POST["details"] ?? null,
-    "location" => $_POST["location"] ?? null,
-    "date"     => $_POST["date"] ?? null,
-    "time"     => $_POST["time"] ?? null,
-    "status"   => $_POST["status"] ?? null  
-]);
-
-// Upload new image to Cloudinary
-if (!empty($_FILES["photo"]["name"]) && $_FILES["photo"]["error"] === UPLOAD_ERR_OK) {
-    $uploadedFile = $_FILES["photo"]["tmp_name"];
-
-    $uploadResult = $cloudinary->uploadApi()->upload($uploadedFile, [
-        'folder' => 'announcements', // optional folder in Cloudinary
-    ]);
-
-    $updateData["image"] = $uploadResult['secure_url']; // store Cloudinary URL
+// Validate ID
+if (!isset($_POST["issuance_id"]) || empty($_POST["issuance_id"])) {
+    echo json_encode(["status" => "error", "message" => "Missing request ID."]);
+    exit();
 }
 
-// Update announcement in MongoDB
-$announcementCollection->updateOne(
-    ["_id" => new MongoDB\BSON\ObjectId($id)],
-    ['$set' => $updateData]
-);
+$id = $_POST["issuance_id"];
+$status = $_POST["status"] ?? "Pending";
 
-// Redirect depending on status
-$status = $_POST["status"] ?? null;
-if ($status === "archived") {
-    header("Location: ../pages/admin/admin_announcement_archive.php");
-} else {
-    header("Location: ../pages/admin/admin_announcement.php");
+// Convert to CamelCase
+$status = ucwords(strtolower($status));
+
+// Prepare fields to update
+$updateFields = ['status' => $status];
+
+// Optional editable fields
+if (isset($_POST['certificate_for'])) $updateFields['certificate_for'] = trim($_POST['certificate_for']);
+if (isset($_POST['purpose'])) $updateFields['purpose'] = trim($_POST['purpose']);
+if (isset($_POST['business_name'])) $updateFields['business_name'] = trim($_POST['business_name']);
+if (isset($_POST['business_location'])) $updateFields['business_location'] = trim($_POST['business_location']);
+if (isset($_POST['reason'])) $updateFields['reason'] = trim($_POST['reason']);
+
+try {
+    $issuanceCollection->updateOne(
+        ['_id' => new MongoDB\BSON\ObjectId($id)],
+        ['$set' => $updateFields]
+    );
+
+    // AJAX response
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) || isset($_POST['ajax'])) {
+        echo json_encode(["status" => "success", "newStatus" => $status]);
+        exit();
+    }
+
+    // Non-AJAX redirect
+    header("Location: ../pages/admin/admin_issuance.php");
+    exit();
+
+} catch (Exception $e) {
+    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    exit();
 }
-exit;
