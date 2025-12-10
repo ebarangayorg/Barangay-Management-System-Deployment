@@ -1,7 +1,7 @@
 # Use PHP 8.2 with Apache
 FROM php:8.2-apache
 
-# Install system dependencies and MongoDB extension
+# Install system dependencies, MongoDB extension, and unzip (for composer)
 RUN apt-get update && apt-get install -y libssl-dev unzip git curl \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
@@ -13,20 +13,20 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first (for caching)
+# Copy only composer files first (caching benefit)
 COPY composer.json composer.lock ./
 
-# Install PHP dependencies
+# Install PHP dependencies inside container
 RUN composer install --no-dev --optimize-autoloader
 
-# Copy the rest of the project
+# Copy rest of the project (excluding local vendor/)
 COPY . .
 
 # Ensure uploads folders exist and are writable
-RUN mkdir -p /var/www/html/uploads/announcements \
-    && mkdir -p /var/www/html/uploads/residents \
-    && mkdir -p /var/www/html/uploads/officials \
-    && chmod -R 777 /var/www/html/uploads
+RUN mkdir -p uploads/announcements \
+    && mkdir -p uploads/residents \
+    && mkdir -p uploads/officials \
+    && chmod -R 777 uploads
 
 # Suppress Apache ServerName warning
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
@@ -35,7 +35,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 COPY start-apache.sh /start-apache.sh
 RUN chmod +x /start-apache.sh
 
-# Expose port (Railway overrides with $PORT)
+# Expose default port (Railway overrides $PORT automatically)
 EXPOSE 80
 
 # Start Apache
