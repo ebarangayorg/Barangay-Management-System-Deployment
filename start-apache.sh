@@ -1,11 +1,10 @@
 #!/bin/bash
-# Export environment variables for Apache workers
-export MONGO_URI=$MONGO_URI
-export DB_NAME=$DB_NAME
+# Set default port to 80 if $PORT is not defined (for local testing)
+PORT=${PORT:-80}
 
-# Debug (optional)
-# echo "MONGO_URI=$MONGO_URI"
-# echo "DB_NAME=$DB_NAME"
+# Update Apache ports.conf and default site config to use $PORT
+sed -i "s/Listen 80/Listen ${PORT}/g" /etc/apache2/ports.conf
+sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g" /etc/apache2/sites-available/000-default.conf
 
-# Start Apache in foreground
+# Start Apache in the foreground
 apache2-foreground

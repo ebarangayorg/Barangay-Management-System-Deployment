@@ -3,24 +3,34 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-// Load .env locally if exists
+// Load .env for LOCAL ONLY
 $dotenvPath = __DIR__ . "/../";
 if (file_exists($dotenvPath . ".env")) {
     $dotenv = Dotenv::createImmutable($dotenvPath);
     $dotenv->load();
 }
 
-// Get MongoDB credentials
-$mongoUri = $_ENV['MONGO_URI'] ?? $_SERVER['MONGO_URI'] ?? getenv('MONGO_URI');
-$dbName   = $_ENV['DB_NAME']  ?? $_SERVER['DB_NAME']  ?? getenv('DB_NAME');
+// FULL FALLBACK CHAIN (Works on Local, Docker, Railway)
+$mongoUri = $_ENV['MONGO_URI']
+    ?? $_SERVER['MONGO_URI']
+    ?? getenv('MONGO_URI')
+    ?? null;
+
+$dbName = $_ENV['DB_NAME']
+    ?? $_SERVER['DB_NAME']
+    ?? getenv('DB_NAME')
+    ?? null;
 
 if (!$mongoUri || !$dbName) {
-    die("Error: MONGO_URI or DB_NAME not set.
-Loaded values:
-\$_ENV: " . var_export($_ENV, true) . "
-\$_SERVER: " . var_export($_SERVER, true) . "
-getenv(MONGO_URI): " . var_export(getenv('MONGO_URI'), true)
-    );
+    die("
+        MONGO_URI or DB_NAME not found.<br>
+        Loaded values:<br>
+        \$_ENV: " . var_export($_ENV, true) . "<br>
+        \$_SERVER[MONGO_URI]: " . ($_SERVER['MONGO_URI'] ?? 'NULL') . "<br>
+        getenv(MONGO_URI): " . getenv('MONGO_URI') . "<br>
+        <br>
+        Railway variables are NOT being read by PHP.
+    ");
 }
 
 try {
