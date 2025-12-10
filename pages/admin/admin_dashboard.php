@@ -3,8 +3,7 @@ require_once '../../backend/auth_admin.php';
 require __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $client = new MongoDB\Client("mongodb://localhost:27017");
-    $database = $client->bms_db;
+    require __DIR__ . '/../../backend/config.php'; 
 
     $residentsCollection = $database->residents;
     $issuanceCollection = $database->issuances; 

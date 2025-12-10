@@ -2,8 +2,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 try {
-    $client = new MongoDB\Client("mongodb://localhost:27017");
-    $db = $client->bms_db;
+    require __DIR__ . '/../../backend/config.php';
     $collection = $db->announcements;
 
     // Only active announcements (not archived)
